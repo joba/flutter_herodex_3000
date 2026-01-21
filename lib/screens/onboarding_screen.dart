@@ -3,7 +3,7 @@ import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/analytics_page.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/crashlytics_page.dart';
-import 'package:flutter_herodex_3000/widgets/onboarding/location_page.dart';
+// import 'package:flutter_herodex_3000/widgets/onboarding/location_page.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
@@ -27,9 +27,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   bool _analyticsEnabled = false;
   bool _crashlyticsEnabled = false;
-  bool _locationEnabled = false;
+  final bool _locationEnabled = false;
 
-  static const int _totalPages = 4;
+  static const int _totalPages = 3;
 
   @override
   void dispose() {
@@ -87,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     },
                   ),
                   CrashlyticsPage(
-                    nextPage: _nextPage,
+                    nextPage: _completeOnboarding,
                     crashlyticsEnabled: _crashlyticsEnabled,
                     onCrashlyticsChanged: (value) {
                       setState(() {
@@ -95,15 +95,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       });
                     },
                   ),
-                  LocationPage(
-                    completeOnboarding: _completeOnboarding,
-                    locationEnabled: _locationEnabled,
-                    onLocationChanged: (value) {
-                      setState(() {
-                        _locationEnabled = value;
-                      });
-                    },
-                  ),
+                  // LocationPage(
+                  //   completeOnboarding: _completeOnboarding,
+                  //   locationEnabled: _locationEnabled,
+                  //   onLocationChanged: (value) {
+                  //     setState(() {
+                  //       _locationEnabled = value;
+                  //     });
+                  //   },
+                  // ),
                 ],
               ),
             ),

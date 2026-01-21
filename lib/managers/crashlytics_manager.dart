@@ -37,6 +37,11 @@ class CrashlyticsManager {
     StackTrace? stackTrace, {
     String? reason,
   }) async {
+    debugPrint(
+      _crashlyticsEnabled
+          ? 'Recording error to Crashlytics: $error'
+          : 'Crashlytics is disabled; not recording error.',
+    );
     if (!_crashlyticsEnabled) return;
 
     await FirebaseCrashlytics.instance.recordError(
