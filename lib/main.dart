@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/styles/themes.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<AnalyticsManager>(
           create: (context) => AnalyticsManager(),
+        ),
+        RepositoryProvider<CrashlyticsManager>(
+          create: (context) => CrashlyticsManager(),
         ),
       ],
       child: BlocProvider(
@@ -72,6 +76,7 @@ class OnboardingCheck extends StatelessWidget {
         if (!onboardingCompleted) {
           return OnboardingScreen(
             analyticsManager: context.read<AnalyticsManager>(),
+            crashlyticsManager: context.read<CrashlyticsManager>(),
           );
         }
 

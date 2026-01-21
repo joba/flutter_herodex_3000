@@ -4,15 +4,22 @@ import 'package:flutter_herodex_3000/auth/repository/auth_repository.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
   final AnalyticsManager _analyticsManager;
+  final CrashlyticsManager _crashlyticsManager;
+
   late final StreamSubscription<User?> _authStateSubscription;
 
-  AuthCubit(this._authRepository, {AnalyticsManager? analyticsManager})
-    : _analyticsManager = analyticsManager ?? AnalyticsManager(),
-      super(AuthInitial()) {
+  AuthCubit(
+    this._authRepository, {
+    AnalyticsManager? analyticsManager,
+    CrashlyticsManager? crashlyticsManager,
+  }) : _analyticsManager = analyticsManager ?? AnalyticsManager(),
+       _crashlyticsManager = crashlyticsManager ?? CrashlyticsManager(),
+       super(AuthInitial()) {
     _authStateSubscription = _authRepository.authStateChanges.listen((user) {
       if (user != null) {
         emit(AuthAuthenticated(user));
@@ -29,7 +36,15 @@ class AuthCubit extends Cubit<AuthState> {
         name: 'login',
         parameters: {'method': 'email'},
       );
-    } catch (e) {
+      _crashlyticsManager.setUserIdentifier(
+        _authRepository.currentUser?.uid ?? 'unknown_user',
+      );
+    } catch (e, stackTrace) {
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to login user',
+      );
       String errorMessage = 'An error occurred';
       String errorCode = 'unknown';
 
@@ -47,8 +62,16 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signOut() async {
-    await _authRepository.signOut();
-    await _analyticsManager.logEvent(name: 'logout');
+    try {
+      await _authRepository.signOut();
+      await _analyticsManager.logEvent(name: 'logout');
+    } catch (e, stackTrace) {
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to logout user',
+      );
+    }
   }
 
   Future<void> signUp(String email, String password) async {
@@ -58,7 +81,12 @@ class AuthCubit extends Cubit<AuthState> {
         name: 'sign_up',
         parameters: {'method': 'email'},
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to sign up user',
+      );
       String errorMessage = 'An error occurred';
       String errorCode = 'unknown';
 

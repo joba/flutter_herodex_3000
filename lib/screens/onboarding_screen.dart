@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/analytics_page.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/crashlytics_page.dart';
@@ -9,8 +10,13 @@ import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final AnalyticsManager analyticsManager;
+  final CrashlyticsManager crashlyticsManager;
 
-  const OnboardingScreen({super.key, required this.analyticsManager});
+  const OnboardingScreen({
+    super.key,
+    required this.analyticsManager,
+    required this.crashlyticsManager,
+  });
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -35,6 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_completed', true);
     await widget.analyticsManager.setAnalyticsEnabled(_analyticsEnabled);
+    await widget.crashlyticsManager.updateConsent(_crashlyticsEnabled);
     debugPrint(
       'Onboarding completed. Values: Analytics=$_analyticsEnabled, Crashlytics=$_crashlyticsEnabled, Location=$_locationEnabled',
     );
