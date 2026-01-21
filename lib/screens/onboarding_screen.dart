@@ -7,6 +7,7 @@ import 'package:flutter_herodex_3000/widgets/onboarding/crashlytics_page.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final AnalyticsManager analyticsManager;
@@ -46,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'Onboarding completed. Values: Analytics=$_analyticsEnabled, Crashlytics=$_crashlyticsEnabled, Location=$_locationEnabled',
     );
     if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/auth');
+      context.go('/auth');
     }
   }
 
