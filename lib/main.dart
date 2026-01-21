@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_herodex_3000/styles/themes.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
 import 'package:flutter_herodex_3000/auth/repository/auth_repository.dart';
@@ -39,49 +39,7 @@ class MyApp extends StatelessWidget {
         ),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: Color(0xFF0a0c0a),
-            colorScheme: const ColorScheme(
-              brightness: Brightness.dark,
-              primary: Color(0xFFFFB800),
-              onPrimary: Color(0xFF0A0C0A),
-              secondary: Color(0xFF2F3C7E),
-              onSecondary: Colors.white,
-              error: Color(0xFFB00020),
-              onError: Colors.white,
-              surface: Color(0xFF121212),
-              onSurface: Colors.white,
-            ),
-            textTheme: TextTheme(
-              headlineLarge: GoogleFonts.inter(
-                color: const Color(0xFFFFB800),
-                fontWeight: FontWeight.w300,
-              ),
-              bodyLarge: GoogleFonts.inter(color: const Color(0xFFCCCCCC)),
-              bodyMedium: GoogleFonts.inter(color: const Color(0xFFCCCCCC)),
-            ),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFFB800),
-                foregroundColor: const Color(0xFF0A0C0A),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                minimumSize: const Size.fromHeight(
-                  48,
-                ), // Full width + 48px height
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                textStyle: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            useMaterial3: true,
-          ),
+          theme: appTheme,
           routes: {'/auth': (context) => const AuthFlow()},
           home: const OnboardingCheck(),
         ),
