@@ -12,6 +12,8 @@ class RootNavigation extends StatelessWidget {
     int currentIndex = 0;
 
     if (location.startsWith('/search')) currentIndex = 1;
+    if (location.startsWith('/roster')) currentIndex = 2;
+    if (location.startsWith('/settings')) currentIndex = 3;
 
     return Scaffold(
       body: child,
@@ -25,6 +27,12 @@ class RootNavigation extends StatelessWidget {
             case 1:
               context.go('/search');
               break;
+            case 2:
+              context.go('/roster');
+              break;
+            case 3:
+              context.go('/settings');
+              break;
           }
         },
         destinations: [
@@ -37,6 +45,16 @@ class RootNavigation extends StatelessWidget {
             icon: const Icon(Icons.search_outlined),
             selectedIcon: const Icon(Icons.search),
             label: 'Search',
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.group_outlined),
+            selectedIcon: const Icon(Icons.group),
+            label: 'Roster',
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.settings_outlined),
+            selectedIcon: const Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
