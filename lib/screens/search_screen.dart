@@ -1,48 +1,61 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_herodex_3000/managers/api_manager.dart';
-import 'package:flutter_herodex_3000/models/search_model.dart';
+import 'dart:async';
 
-class SearchScreen extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/search/search_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
+import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
+import 'package:flutter_herodex_3000/managers/api_manager.dart';
+import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
+
+class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SearchBloc(ApiManager()),
+      child: const SearchView(),
+    );
+  }
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  final ApiManager _apiManager = ApiManager();
+class SearchView extends StatefulWidget {
+  const SearchView({super.key});
+
+  @override
+  State<SearchView> createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
   final TextEditingController _searchController = TextEditingController();
-  bool _isLoading = false;
-  SearchModel? _searchResult;
-  String _error = '';
+  Timer? _debounce;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
 
   @override
   void dispose() {
+    _debounce?.cancel();
+    _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
   }
 
-  Future<void> _searchHero() async {
+  void _onSearchChanged() {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _searchHero();
+    });
+  }
+
+  void _searchHero() {
     final searchTerm = _searchController.text.trim();
     if (searchTerm.isEmpty) return;
-
-    setState(() {
-      _searchResult = null;
-      _error = '';
-      _isLoading = true;
-    });
-    try {
-      final result = await _apiManager.searchHeroes(searchTerm);
-      setState(() {
-        _searchResult = result;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = 'Error: $e';
-        _isLoading = false;
-      });
-    }
+    context.read<SearchBloc>().add(SearchHeroRequested(searchTerm));
   }
 
   @override
@@ -63,38 +76,53 @@ class _SearchScreenState extends State<SearchScreen> {
                 onSubmitted: (_) => _searchHero(),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _searchHero,
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text('SEARCH'),
+              BlocBuilder<SearchBloc, SearchState>(
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: state is SearchLoading ? null : _searchHero,
+                    child: state is SearchLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Text('SEARCH'),
+                  );
+                },
               ),
               const SizedBox(height: 20),
-              if (_error.isNotEmpty)
-                Text(
-                  _error,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
-                ),
-              if (_searchResult != null) ...[
-                Text('Found ${_searchResult!.results.length} results'),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _searchResult!.results.length,
-                    itemBuilder: (context, index) {
-                      final hero = _searchResult!.results[index];
-                      return ListTile(
-                        title: Text(hero.name),
-                        subtitle: Text('ID: ${hero.id}'),
+              Expanded(
+                child: BlocBuilder<SearchBloc, SearchState>(
+                  builder: (context, state) {
+                    if (state is SearchError) {
+                      return Text(
+                        state.message,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
                       );
-                    },
-                  ),
+                    }
+                    if (state is SearchSuccess) {
+                      return Column(
+                        children: [
+                          Text('Found ${state.result.results.length} results'),
+                          const SizedBox(height: 16),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: state.result.results.length,
+                              itemBuilder: (context, index) {
+                                final hero = state.result.results[index];
+                                return HeroCard(hero: hero);
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
-              ],
+              ),
             ],
           ),
         ),
