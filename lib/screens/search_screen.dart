@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/favorites/favorites_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/favorites/favorites_event.dart';
+import 'package:flutter_herodex_3000/blocs/favorites/favorites_state.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
@@ -13,8 +16,11 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SearchBloc(ApiManager()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SearchBloc(ApiManager())),
+        BlocProvider(create: (context) => FavoritesBloc()),
+      ],
       child: const SearchView(),
     );
   }
@@ -60,70 +66,95 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: _searchController,
-                decoration: const InputDecoration(
-                  labelText: 'Search for a hero',
-                  hintText: 'Enter hero name...',
-                  border: OutlineInputBorder(),
+    return BlocListener<FavoritesBloc, FavoritesState>(
+      listener: (context, state) {
+        if (state is FavoritesSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${state.heroName} added to favorites!')),
+          );
+        } else if (state is FavoritesError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    labelText: 'Search for a hero',
+                    hintText: 'Enter hero name...',
+                    border: OutlineInputBorder(),
+                  ),
+                  onSubmitted: (_) => _searchHero(),
                 ),
-                onSubmitted: (_) => _searchHero(),
-              ),
-              const SizedBox(height: 16),
-              BlocBuilder<SearchBloc, SearchState>(
-                builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: state is SearchLoading ? null : _searchHero,
-                    child: state is SearchLoading
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('SEARCH'),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: BlocBuilder<SearchBloc, SearchState>(
+                const SizedBox(height: 16),
+                BlocBuilder<SearchBloc, SearchState>(
                   builder: (context, state) {
-                    if (state is SearchError) {
-                      return Text(
-                        state.message,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      );
-                    }
-                    if (state is SearchSuccess) {
-                      return Column(
-                        children: [
-                          Text('Found ${state.result.results.length} results'),
-                          const SizedBox(height: 16),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: state.result.results.length,
-                              itemBuilder: (context, index) {
-                                final hero = state.result.results[index];
-                                return HeroCard(hero: hero);
-                              },
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    return const SizedBox.shrink();
+                    return ElevatedButton(
+                      onPressed: state is SearchLoading ? null : _searchHero,
+                      child: state is SearchLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text('SEARCH'),
+                    );
                   },
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                Expanded(
+                  child: BlocBuilder<SearchBloc, SearchState>(
+                    builder: (context, state) {
+                      if (state is SearchError) {
+                        return Text(
+                          state.message,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        );
+                      }
+                      if (state is SearchSuccess) {
+                        return Column(
+                          children: [
+                            Text(
+                              'Found ${state.result.results.length} results',
+                            ),
+                            const SizedBox(height: 16),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: state.result.results.length,
+                                itemBuilder: (context, index) {
+                                  final hero = state.result.results[index];
+                                  return HeroCard(
+                                    hero: hero,
+                                    onAddPressed: () {
+                                      context.read<FavoritesBloc>().add(
+                                        AddHeroToFavorites(hero),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

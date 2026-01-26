@@ -3,10 +3,14 @@ import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
 
 class HeroCard extends StatelessWidget {
   final HeroModel hero;
-  const HeroCard({super.key, required this.hero});
+  final VoidCallback? onAddPressed;
+
+  const HeroCard({super.key, required this.hero, this.onAddPressed});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Container(
@@ -32,29 +36,45 @@ class HeroCard extends StatelessWidget {
             children: [
               Text(
                 hero.name.toUpperCase(),
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                style: theme.textTheme.headlineLarge?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                hero.powerstats?.strength != null
-                    ? 'Strength: ${hero.powerstats!.strength}'
-                    : 'Strength: N/A',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              Text(
-                hero.powerstats?.intelligence != null
-                    ? 'Intelligence: ${hero.powerstats!.intelligence}'
-                    : 'Intelligence: N/A',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              Text(
-                hero.powerstats?.combat != null
-                    ? 'Combat: ${hero.powerstats!.combat}'
-                    : 'Combat: N/A',
-                style: Theme.of(context).textTheme.bodyLarge,
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          hero.powerstats?.strength != null
+                              ? 'Strength: ${hero.powerstats!.strength}'
+                              : 'Strength: N/A',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        Text(
+                          hero.powerstats?.intelligence != null
+                              ? 'Intelligence: ${hero.powerstats!.intelligence}'
+                              : 'Intelligence: N/A',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        Text(
+                          hero.powerstats?.combat != null
+                              ? 'Combat: ${hero.powerstats!.combat}'
+                              : 'Combat: N/A',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle, size: 28),
+                    color: theme.colorScheme.primary,
+                    onPressed: onAddPressed,
+                  ),
+                ],
               ),
             ],
           ),
