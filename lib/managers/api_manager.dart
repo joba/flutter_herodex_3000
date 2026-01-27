@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/managers/image_manager.dart';
+import 'package:flutter_herodex_3000/models/hero_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_herodex_3000/models/search_model.dart';
@@ -33,6 +34,23 @@ class ApiManager {
       }
     } catch (e) {
       throw Exception('Failed to search heroes: $e');
+    }
+  }
+
+  Future<HeroModel> getHeroById(String id) async {
+    final url = '$_baseUrl/$_apiKey/$id';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return HeroModel.fromJson(data);
+      } else {
+        throw Exception('Failed to get hero by ID: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Failed to get hero by ID: $e');
     }
   }
 

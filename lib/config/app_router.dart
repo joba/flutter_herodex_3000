@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_event.dart';
+import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/main.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
@@ -8,6 +11,7 @@ import 'package:flutter_herodex_3000/screens/onboarding_screen.dart';
 import 'package:flutter_herodex_3000/screens/roster_screen.dart';
 import 'package:flutter_herodex_3000/screens/search_screen.dart';
 import 'package:flutter_herodex_3000/screens/settings_screen.dart';
+import 'package:flutter_herodex_3000/widgets/hero_details_widget.dart';
 import 'package:flutter_herodex_3000/widgets/navigation_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,6 +76,28 @@ final appRouter = GoRouter(
       path: '/',
       builder: (context, state) =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
+    ),
+    GoRoute(
+      path: '/details/:id',
+      name: 'details',
+      builder: (context, state) {
+        final heroId = state.pathParameters['id']!;
+
+        // Try to get RosterBloc if available from context
+        RosterBloc? rosterBloc;
+        try {
+          rosterBloc = context.read<RosterBloc>();
+        } catch (_) {
+          // RosterBloc not available, continue without it
+        }
+
+        return BlocProvider(
+          create: (context) =>
+              HeroDetailBloc(rosterBloc: rosterBloc)
+                ..add(LoadHeroDetail(heroId)),
+          child: HeroDetails(id: heroId),
+        );
+      },
     ),
   ],
 );
