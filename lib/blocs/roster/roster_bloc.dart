@@ -23,7 +23,7 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
   }
 
   Future<void> _onGetRoster(GetRoster event, Emitter<RosterState> emit) async {
-    emit(RosterLoading(heroIds: state.heroIds));
+    emit(RosterLoading(heroes: state.heroes));
     try {
       final snapshot = await _firestore.collection(_collectionName).get();
       final heroes = snapshot.docs
@@ -36,7 +36,7 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
         stackTrace,
         reason: 'Failed to get roster',
       );
-      emit(RosterError('Failed to load roster: $e', heroIds: state.heroIds));
+      emit(RosterError('Failed to load roster: $e', heroes: state.heroes));
     }
   }
 
@@ -44,7 +44,7 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
     AddHeroToRoster event,
     Emitter<RosterState> emit,
   ) async {
-    emit(RosterLoading(heroIds: state.heroIds));
+    emit(RosterLoading(heroes: state.heroes));
     try {
       await _firestore
           .collection(_collectionName)
@@ -56,12 +56,11 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
       );
 
       // Update the hero IDs set
-      final updatedIds = Set<String>.from(state.heroIds)
-        ..add(event.hero.id.toString());
+      final updatedHeroes = Set<HeroModel>.from(state.heroes)..add(event.hero);
       emit(
         RosterSuccess(
           'Hero ${event.hero.name} added successfully',
-          heroIds: updatedIds,
+          heroes: updatedHeroes,
         ),
       );
     } catch (e, stackTrace) {
@@ -70,7 +69,7 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
         stackTrace,
         reason: 'Failed to add hero to roster',
       );
-      emit(RosterError('Failed to add hero: $e', heroIds: state.heroIds));
+      emit(RosterError('Failed to add hero: $e', heroes: state.heroes));
     }
   }
 

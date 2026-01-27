@@ -1,9 +1,9 @@
 import 'package:flutter_herodex_3000/models/hero_model.dart';
 
 abstract class RosterState {
-  final Set<String> heroIds;
+  final Set<HeroModel> heroes;
 
-  RosterState({Set<String>? heroIds}) : heroIds = heroIds ?? {};
+  RosterState({Set<HeroModel>? heroes}) : heroes = heroes ?? {};
 }
 
 class RosterInitial extends RosterState {
@@ -11,24 +11,23 @@ class RosterInitial extends RosterState {
 }
 
 class RosterLoading extends RosterState {
-  RosterLoading({super.heroIds});
+  RosterLoading({super.heroes});
 }
 
 class RosterLoaded extends RosterState {
-  final List<HeroModel> heroes;
+  final List<HeroModel> roster;
 
-  RosterLoaded(this.heroes)
-    : super(heroIds: heroes.map((h) => h.id.toString()).toSet());
+  RosterLoaded(this.roster) : super(heroes: roster.toSet());
 }
 
 class RosterSuccess extends RosterState {
   final String message;
 
-  RosterSuccess(this.message, {super.heroIds});
+  RosterSuccess(this.message, {super.heroes});
 }
 
 class RosterError extends RosterState {
   final String message;
 
-  RosterError(this.message, {super.heroIds});
+  RosterError(this.message, {super.heroes});
 }

@@ -9,6 +9,7 @@ import 'package:flutter_herodex_3000/blocs/search/search_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
+import 'package:flutter_herodex_3000/models/hero_model.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -126,10 +127,42 @@ class _SearchViewState extends State<SearchView> {
                         );
                       }
                       if (state is SearchSuccess) {
+                        // final String searchTerm = _searchController.text.trim();
+                        // final List<HeroModel> rosterResults = context
+                        //     .read<RosterBloc>()
+                        //     .state
+                        //     .heroes
+                        //     .where(
+                        //       (hero) => hero.name.toLowerCase().contains(
+                        //         searchTerm.toLowerCase(),
+                        //       ),
+                        //     )
+                        //     .toList();
                         return Column(
                           children: [
+                            // Display roster results first
+                            // Text(
+                            //   'Found ${rosterResults.length} result(s) already in roster',
+                            // ),
+                            // const SizedBox(height: 16),
+                            // Expanded(
+                            //   child: ListView.builder(
+                            //     itemCount: rosterResults.length,
+                            //     itemBuilder: (context, index) {
+                            //       final hero = rosterResults[index];
+                            //       return HeroCard(
+                            //         hero: hero,
+                            //         onAddPressed: () {
+                            //           context.read<RosterBloc>().add(
+                            //             AddHeroToRoster(hero),
+                            //           );
+                            //         },
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
                             Text(
-                              'Found ${state.result.results.length} results',
+                              'Found ${state.result.results.length} result(s)',
                             ),
                             const SizedBox(height: 16),
                             Expanded(
