@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
 import 'package:go_router/go_router.dart';
@@ -21,7 +22,7 @@ class HeroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
+    final cardWidget = Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => context.push('/details/${hero.id}'),
@@ -94,14 +95,6 @@ class HeroCard extends StatelessWidget {
                               .map((h) => h.id)
                               .contains(hero.id);
 
-                          if (state is RosterLoading) {
-                            return const SizedBox(
-                              width: 28,
-                              height: 28,
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-
                           if (isInRoster) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 10),
@@ -128,5 +121,30 @@ class HeroCard extends StatelessWidget {
         ),
       ),
     );
+
+    // Only make it dismissible when showIcon is false (roster screen)
+    if (!showIcon) {
+      return Dismissible(
+        key: Key(hero.id.toString()),
+        direction: DismissDirection.endToStart,
+        background: Container(
+          color: theme.colorScheme.error,
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: const Icon(Icons.delete, color: Colors.white),
+        ),
+        onDismissed: (direction) {
+          context.read<RosterBloc>().add(
+            RemoveHeroFromRoster(hero.id.toString()),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${hero.name} was removed from roster')),
+          );
+        },
+        child: cardWidget,
+      );
+    }
+
+    return cardWidget;
   }
 }

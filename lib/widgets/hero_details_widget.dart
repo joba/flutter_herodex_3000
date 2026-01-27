@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_event.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_state.dart';
-import 'package:flutter_herodex_3000/models/hero_model.dart';
 
 class HeroDetails extends StatelessWidget {
   final String id;

@@ -20,6 +20,7 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
     on<AddHeroToRoster>(_onAddHeroToRoster);
     on<GetHeroById>(_onGetHeroById);
     on<GetRoster>(_onGetRoster);
+    on<RemoveHeroFromRoster>(_removeHeroFromRoster);
   }
 
   Future<void> _onGetRoster(GetRoster event, Emitter<RosterState> emit) async {
@@ -99,6 +100,37 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
       );
       emit(RosterError('Failed to get hero: $e'));
       throw Exception('Failed to get hero: $e');
+    }
+  }
+
+  Future<void> _removeHeroFromRoster(
+    RemoveHeroFromRoster event,
+    Emitter<RosterState> emit,
+  ) async {
+    // Optimistically remove from state immediately
+    final updatedHeroes = Set<HeroModel>.from(state.heroes)
+      ..removeWhere((hero) => hero.id.toString() == event.heroId);
+
+    emit(RosterLoaded(updatedHeroes.toList()));
+
+    try {
+      await _firestore.collection(_collectionName).doc(event.heroId).delete();
+      _analyticsManager.logEvent(
+        name: 'remove_hero_from_roster',
+        parameters: {'hero_id': event.heroId},
+      );
+
+      emit(RosterSuccess('Hero removed successfully', heroes: updatedHeroes));
+    } catch (e, stackTrace) {
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to remove hero from roster',
+      );
+
+      // Revert the change on error by reloading
+      add(GetRoster());
+      emit(RosterError('Failed to remove hero: $e', heroes: state.heroes));
     }
   }
 }
