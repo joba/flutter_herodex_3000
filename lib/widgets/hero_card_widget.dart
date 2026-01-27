@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
 
 class HeroCard extends StatelessWidget {
@@ -69,10 +72,22 @@ class HeroCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.add_circle, size: 28),
-                    color: theme.colorScheme.primary,
-                    onPressed: onAddPressed,
+                  BlocBuilder<RosterBloc, RosterState>(
+                    builder: (context, state) {
+                      final isInRoster = state.heroIds.contains(
+                        hero.id.toString(),
+                      );
+
+                      if (isInRoster) {
+                        return const SizedBox.shrink();
+                      }
+
+                      return IconButton(
+                        icon: const Icon(Icons.add_circle, size: 28),
+                        color: theme.colorScheme.primary,
+                        onPressed: onAddPressed,
+                      );
+                    },
                   ),
                 ],
               ),

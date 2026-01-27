@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_herodex_3000/blocs/favorites/favorites_bloc.dart';
-import 'package:flutter_herodex_3000/blocs/favorites/favorites_event.dart';
-import 'package:flutter_herodex_3000/blocs/favorites/favorites_state.dart';
+import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
+import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
+import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
@@ -19,7 +19,7 @@ class SearchScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => SearchBloc(ApiManager())),
-        BlocProvider(create: (context) => FavoritesBloc()),
+        BlocProvider(create: (context) => RosterBloc()),
       ],
       child: const SearchView(),
     );
@@ -41,6 +41,8 @@ class _SearchViewState extends State<SearchView> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    // Load the roster to know which heroes are already added
+    context.read<RosterBloc>().add(GetRoster());
   }
 
   @override
@@ -66,13 +68,13 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FavoritesBloc, FavoritesState>(
+    return BlocListener<RosterBloc, RosterState>(
       listener: (context, state) {
-        if (state is FavoritesSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${state.heroName} added to favorites!')),
-          );
-        } else if (state is FavoritesError) {
+        if (state is RosterSuccess) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+        } else if (state is RosterError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -138,8 +140,8 @@ class _SearchViewState extends State<SearchView> {
                                   return HeroCard(
                                     hero: hero,
                                     onAddPressed: () {
-                                      context.read<FavoritesBloc>().add(
-                                        AddHeroToFavorites(hero),
+                                      context.read<RosterBloc>().add(
+                                        AddHeroToRoster(hero),
                                       );
                                     },
                                   );
