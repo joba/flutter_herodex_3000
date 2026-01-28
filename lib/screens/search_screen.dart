@@ -17,11 +17,8 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => SearchBloc(ApiManager())),
-        BlocProvider(create: (context) => RosterBloc()),
-      ],
+    return BlocProvider(
+      create: (context) => SearchBloc(ApiManager()),
       child: const SearchView(),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
-import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
 
@@ -10,10 +9,7 @@ class RosterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RosterBloc()..add(GetRoster()),
-      child: const RosterView(),
-    );
+    return const RosterView();
   }
 }
 

@@ -15,49 +15,54 @@ class RootNavigation extends StatelessWidget {
     if (location.startsWith('/roster')) currentIndex = 2;
     if (location.startsWith('/settings')) currentIndex = 3;
 
+    // Hide navigation bar on splash screen
+    final showNavigation = !location.startsWith('/splash');
+
     return Scaffold(
       body: child,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentIndex,
-        onDestinationSelected: (int index) {
-          switch (index) {
-            case 0:
-              context.go('/home');
-              break;
-            case 1:
-              context.go('/search');
-              break;
-            case 2:
-              context.go('/roster');
-              break;
-            case 3:
-              context.go('/settings');
-              break;
-          }
-        },
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.search_outlined),
-            selectedIcon: const Icon(Icons.search),
-            label: 'Search',
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.group_outlined),
-            selectedIcon: const Icon(Icons.group),
-            label: 'Roster',
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.settings_outlined),
-            selectedIcon: const Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-      ),
+      bottomNavigationBar: showNavigation
+          ? NavigationBar(
+              selectedIndex: currentIndex,
+              onDestinationSelected: (int index) {
+                switch (index) {
+                  case 0:
+                    context.go('/home');
+                    break;
+                  case 1:
+                    context.go('/search');
+                    break;
+                  case 2:
+                    context.go('/roster');
+                    break;
+                  case 3:
+                    context.go('/settings');
+                    break;
+                }
+              },
+              destinations: [
+                NavigationDestination(
+                  icon: const Icon(Icons.home_outlined),
+                  selectedIcon: const Icon(Icons.home),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.search_outlined),
+                  selectedIcon: const Icon(Icons.search),
+                  label: 'Search',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.group_outlined),
+                  selectedIcon: const Icon(Icons.group),
+                  label: 'Roster',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.settings_outlined),
+                  selectedIcon: const Icon(Icons.settings),
+                  label: 'Settings',
+                ),
+              ],
+            )
+          : null,
     );
   }
 }

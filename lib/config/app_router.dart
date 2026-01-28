@@ -11,6 +11,7 @@ import 'package:flutter_herodex_3000/screens/onboarding_screen.dart';
 import 'package:flutter_herodex_3000/screens/roster_screen.dart';
 import 'package:flutter_herodex_3000/screens/search_screen.dart';
 import 'package:flutter_herodex_3000/screens/settings_screen.dart';
+import 'package:flutter_herodex_3000/screens/splash_screen.dart';
 import 'package:flutter_herodex_3000/widgets/hero_details_widget.dart';
 import 'package:flutter_herodex_3000/widgets/navigation_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -60,6 +61,7 @@ final appRouter = GoRouter(
         ),
       ],
     ),
+    GoRoute(path: '/splash', builder: (context, state) => const SplashScreen()),
     GoRoute(path: '/auth', builder: (context, state) => const AuthFlow()),
     GoRoute(
       path: '/onboarding',

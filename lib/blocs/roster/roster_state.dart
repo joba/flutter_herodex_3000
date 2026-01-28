@@ -4,6 +4,15 @@ abstract class RosterState {
   final Set<HeroModel> heroes;
 
   RosterState({Set<HeroModel>? heroes}) : heroes = heroes ?? {};
+
+  int get heroCount => heroes.length;
+
+  int get totalPower {
+    return heroes.fold(0, (sum, hero) {
+      final power = int.tryParse(hero.powerstats?.power ?? '0') ?? 0;
+      return sum + power;
+    });
+  }
 }
 
 class RosterInitial extends RosterState {
