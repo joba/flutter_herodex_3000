@@ -8,6 +8,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
@@ -89,9 +90,9 @@ class _SearchViewState extends State<SearchView> {
               children: [
                 TextField(
                   controller: _searchController,
-                  decoration: const InputDecoration(
-                    labelText: 'Search for a hero',
-                    hintText: 'Enter hero name...',
+                  decoration: InputDecoration(
+                    labelText: AppTexts.search.searchPlaceholder,
+                    hintText: AppTexts.search.hint,
                     border: OutlineInputBorder(),
                   ),
                   onSubmitted: (_) => _searchHero(),
@@ -107,7 +108,7 @@ class _SearchViewState extends State<SearchView> {
                               height: 20,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : const Text('SEARCH'),
+                          : Text(AppTexts.search.search.toUpperCase()),
                     );
                   },
                 ),
@@ -159,7 +160,9 @@ class _SearchViewState extends State<SearchView> {
                             //   ),
                             // ),
                             Text(
-                              'Found ${state.result.results.length} result(s)',
+                              AppTexts.search.searchResults(
+                                state.result.results.length.toDouble(),
+                              ),
                             ),
                             const SizedBox(height: 16),
                             Expanded(

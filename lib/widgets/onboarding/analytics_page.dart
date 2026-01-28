@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class AnalyticsPage extends StatelessWidget {
@@ -21,12 +22,12 @@ class AnalyticsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            'Analytics'.toUpperCase(),
+            AppTexts.onboarding.analyticsTitle,
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           const SizedBox(height: 16),
           Text(
-            'We use analytics to understand how you use our app and make it better. Your data is anonymous and secure.',
+            AppTexts.onboarding.analyticsInfo,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
@@ -35,7 +36,7 @@ class AnalyticsPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Enable analytics',
+                AppTexts.onboarding.enableAnalytics,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Switch(
@@ -46,7 +47,10 @@ class AnalyticsPage extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          UpperCaseElevatedButton(onPressed: onNext, text: 'Next'),
+          UpperCaseElevatedButton(
+            onPressed: onNext,
+            text: AppTexts.common.next,
+          ),
         ],
       ),
     );

@@ -43,9 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await prefs.setBool('onboarding_completed', true);
     await widget.analyticsManager.setAnalyticsEnabled(_analyticsEnabled);
     await widget.crashlyticsManager.updateConsent(_crashlyticsEnabled);
-    debugPrint(
-      'Onboarding completed. Values: Analytics=$_analyticsEnabled, Crashlytics=$_crashlyticsEnabled, Location=$_locationEnabled',
-    );
+
     if (mounted) {
       context.go('/auth');
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class CrashlyticsPage extends StatelessWidget {
@@ -21,12 +22,12 @@ class CrashlyticsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            'Crashlytics'.toUpperCase(),
+            AppTexts.onboarding.crashLyticsTitle,
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           const SizedBox(height: 16),
           Text(
-            'We use Crashlytics to understand how you use our app and make it better. Your data is anonymous and secure.',
+            AppTexts.onboarding.crashLyticsInfo,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
@@ -35,7 +36,7 @@ class CrashlyticsPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Enable Crashlytics',
+                AppTexts.onboarding.enableCrashlytics,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Switch(
@@ -48,7 +49,10 @@ class CrashlyticsPage extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          UpperCaseElevatedButton(onPressed: nextPage, text: 'Next'),
+          UpperCaseElevatedButton(
+            onPressed: nextPage,
+            text: AppTexts.common.next,
+          ),
         ],
       ),
     );

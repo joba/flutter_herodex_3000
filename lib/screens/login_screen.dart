@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/styles/colors.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/signup_widget.dart';
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const HerodexLogo(),
                 const SizedBox(height: 32),
                 Text(
-                  'Login'.toUpperCase(),
+                  AppTexts.auth.signIn.toUpperCase(),
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 const SizedBox(height: 32),
@@ -77,14 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextFormField(
                         controller: _emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
+                        decoration: InputDecoration(
+                          labelText: AppTexts.auth.emailPlaceholder,
+                        ),
                         validator: (value) =>
-                            value!.isEmpty ? 'Please enter an email' : null,
+                            value!.isEmpty ? AppTexts.auth.invalidEmail : null,
                       ),
                       TextFormField(
                         controller: _passwordController,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
+                        decoration: InputDecoration(
+                          labelText: AppTexts.auth.passwordPlaceholder,
                         ),
                         obscureText: true,
                         textInputAction: TextInputAction.done,
@@ -96,8 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           }
                         },
-                        validator: (value) =>
-                            value!.isEmpty ? 'Please enter a password' : null,
+                        validator: (value) => value!.isEmpty
+                            ? AppTexts.auth.invalidPassword
+                            : null,
                       ),
                       const SizedBox(height: 20),
                       UpperCaseElevatedButton(
@@ -109,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           }
                         },
-                        text: 'Login',
+                        text: AppTexts.auth.signIn,
                       ),
                       const SizedBox(height: 20),
                       UpperCaseElevatedButton(
@@ -126,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           );
                         },
-                        text: 'Create Account',
+                        text: AppTexts.auth.signUp,
                       ),
                     ],
                   ),

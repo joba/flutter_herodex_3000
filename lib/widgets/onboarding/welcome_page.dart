@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -13,17 +14,20 @@ class WelcomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            'HeroDex 3000'.toUpperCase(),
+            AppTexts.common.title.toUpperCase(),
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           const SizedBox(height: 16),
           Text(
-            'Thank you for choosing our app. Let\'s get you started with a quick setup.',
+            AppTexts.onboarding.getStarted,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const Spacer(),
-          UpperCaseElevatedButton(onPressed: onNext, text: 'Next'),
+          UpperCaseElevatedButton(
+            onPressed: onNext,
+            text: AppTexts.common.next,
+          ),
         ],
       ),
     );

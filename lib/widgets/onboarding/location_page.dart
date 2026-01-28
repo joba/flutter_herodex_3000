@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class LocationPage extends StatelessWidget {
@@ -20,12 +21,12 @@ class LocationPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            'Location'.toUpperCase(),
+            AppTexts.onboarding.locationTitle,
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           const SizedBox(height: 16),
           Text(
-            'We use location data to enhance your experience. Your data is anonymous and secure.',
+            AppTexts.onboarding.locationInfo,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
@@ -34,7 +35,7 @@ class LocationPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Enable Location',
+                AppTexts.onboarding.enableLocation,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Switch(
@@ -49,7 +50,7 @@ class LocationPage extends StatelessWidget {
           const Spacer(),
           UpperCaseElevatedButton(
             onPressed: completeOnboarding,
-            text: 'Finish',
+            text: AppTexts.onboarding.finish,
           ),
         ],
       ),

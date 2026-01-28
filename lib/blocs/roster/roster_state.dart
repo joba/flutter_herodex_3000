@@ -13,6 +13,13 @@ abstract class RosterState {
       return sum + power;
     });
   }
+
+  int get totalCombat {
+    return heroes.fold(0, (sum, hero) {
+      final combat = int.tryParse(hero.powerstats?.combat ?? '0') ?? 0;
+      return sum + combat;
+    });
+  }
 }
 
 class RosterInitial extends RosterState {

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_event.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_state.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 
 class HeroDetails extends StatelessWidget {
   final String id;
@@ -30,7 +31,7 @@ class HeroDetails extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () =>
                       context.read<HeroDetailBloc>().add(LoadHeroDetail(id)),
-                  child: const Text('Retry'),
+                  child: Text(AppTexts.common.retry),
                 ),
               ],
             ),
@@ -38,7 +39,7 @@ class HeroDetails extends StatelessWidget {
         }
 
         if (state is! HeroDetailLoaded) {
-          return const Center(child: Text('Hero not found'));
+          return Center(child: Text(AppTexts.roster.heroNotFound));
         }
 
         final theme = Theme.of(context);

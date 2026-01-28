@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 
 class RosterScreen extends StatelessWidget {
   const RosterScreen({super.key});
@@ -44,11 +45,7 @@ class RosterView extends StatelessWidget {
                     }
 
                     if (state.heroes.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          'No heroes in your roster yet.\nSearch and add some heroes!',
-                        ),
-                      );
+                      return Center(child: Text(AppTexts.roster.empty));
                     }
                     final rosterList = state.heroes.toList();
                     return ListView.builder(

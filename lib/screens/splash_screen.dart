@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class SplashScreen extends StatelessWidget {
                 child: const HerodexLogo(),
               ),
               Text(
-                'HeroDex 3000'.toUpperCase(),
+                AppTexts.common.title.toUpperCase(),
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 32),
