@@ -74,10 +74,12 @@ class _SearchTexts {
   const _SearchTexts();
 
   String get search => 'Search';
+  String get recentSearches => 'Recent Searches';
+  String get clearAll => 'Clear All';
   String get searchPlaceholder => 'Search for a hero...';
   String get hint => 'Enter a hero name';
   String get noResults => 'No heroes found';
-  String searchResults(double result) => 'Found $result result(s)';
+  String searchResults(int result) => 'Found $result result(s)';
   String get searchError => 'Failed to search heroes';
 }
 

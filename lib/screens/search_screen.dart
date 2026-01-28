@@ -10,7 +10,6 @@ import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
-import 'package:flutter_herodex_3000/models/hero_model.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -40,8 +39,8 @@ class _SearchViewState extends State<SearchView> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
-    // Load the roster to know which heroes are already added
-    context.read<RosterBloc>().add(GetRoster());
+    // Load search history
+    context.read<SearchBloc>().add(LoadSearchHistory());
   }
 
   @override
@@ -124,44 +123,66 @@ class _SearchViewState extends State<SearchView> {
                           ),
                         );
                       }
+                      if (state is SearchInitial &&
+                          state.searchHistory.isNotEmpty) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppTexts.search.recentSearches,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    context.read<SearchBloc>().add(
+                                      ClearSearchHistory(),
+                                    );
+                                  },
+                                  child: Text(AppTexts.search.clearAll),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: state.searchHistory.length,
+                                itemBuilder: (context, index) {
+                                  final query = state.searchHistory[index];
+                                  return ListTile(
+                                    leading: const Icon(Icons.history),
+                                    title: Text(query),
+                                    trailing: IconButton(
+                                      icon: const Icon(Icons.close, size: 20),
+                                      onPressed: () {
+                                        context.read<SearchBloc>().add(
+                                          RemoveFromSearchHistory(query),
+                                        );
+                                      },
+                                    ),
+                                    onTap: () {
+                                      _searchController.text = query;
+                                      context.read<SearchBloc>().add(
+                                        SearchHeroRequested(query),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }
                       if (state is SearchSuccess) {
-                        // final String searchTerm = _searchController.text.trim();
-                        // final List<HeroModel> rosterResults = context
-                        //     .read<RosterBloc>()
-                        //     .state
-                        //     .heroes
-                        //     .where(
-                        //       (hero) => hero.name.toLowerCase().contains(
-                        //         searchTerm.toLowerCase(),
-                        //       ),
-                        //     )
-                        //     .toList();
                         return Column(
                           children: [
-                            // Display roster results first
-                            // Text(
-                            //   'Found ${rosterResults.length} result(s) already in roster',
-                            // ),
-                            // const SizedBox(height: 16),
-                            // Expanded(
-                            //   child: ListView.builder(
-                            //     itemCount: rosterResults.length,
-                            //     itemBuilder: (context, index) {
-                            //       final hero = rosterResults[index];
-                            //       return HeroCard(
-                            //         hero: hero,
-                            //         onAddPressed: () {
-                            //           context.read<RosterBloc>().add(
-                            //             AddHeroToRoster(hero),
-                            //           );
-                            //         },
-                            //       );
-                            //     },
-                            //   ),
-                            // ),
                             Text(
                               AppTexts.search.searchResults(
-                                state.result.results.length.toDouble(),
+                                state.result.results.length,
                               ),
                             ),
                             const SizedBox(height: 16),
