@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/managers/image_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
 import 'package:go_router/go_router.dart';
 
@@ -27,98 +29,112 @@ class HeroCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => context.push('/details/${hero.id}'),
-        child: Container(
-          height: 200,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(hero.image?.url ?? ''),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withAlpha(0),
-                  Colors.black.withAlpha(255),
-                ],
+        child: FutureBuilder<String?>(
+          future: ImageManager().getLocalHeroImagePath(hero.id.toString()),
+          builder: (context, snapshot) {
+            ImageProvider imageProvider;
+
+            if (snapshot.hasData && snapshot.data != null) {
+              debugPrint('Using local image for hero ${hero.name}');
+              // Use local image if available
+              imageProvider = FileImage(File(snapshot.data!));
+            } else {
+              debugPrint('Using network image for hero ${hero.name}');
+              // Fall back to network image
+              imageProvider = NetworkImage(hero.image?.url ?? '');
+            }
+
+            return Container(
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
               ),
-            ),
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  hero.name.toUpperCase(),
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withAlpha(0),
+                      Colors.black.withAlpha(255),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            hero.powerstats?.strength != null &&
-                                    hero.powerstats?.strength != 'null'
-                                ? 'Strength: ${hero.powerstats!.strength}'
-                                : 'Strength: N/A',
-                            style: theme.textTheme.bodyLarge,
-                          ),
-                          Text(
-                            hero.powerstats?.intelligence != null &&
-                                    hero.powerstats?.intelligence != 'null'
-                                ? 'Intelligence: ${hero.powerstats!.intelligence}'
-                                : 'Intelligence: N/A',
-                            style: theme.textTheme.bodyLarge,
-                          ),
-                          Text(
-                            hero.powerstats?.combat != null &&
-                                    hero.powerstats?.combat != 'null'
-                                ? 'Combat: ${hero.powerstats!.combat}'
-                                : 'Combat: N/A',
-                            style: theme.textTheme.bodyLarge,
-                          ),
-                        ],
+                    Text(
+                      hero.name.toUpperCase(),
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    if (showIcon)
-                      BlocBuilder<RosterBloc, RosterState>(
-                        builder: (context, state) {
-                          final isInRoster = state.heroes
-                              .map((h) => h.id)
-                              .contains(hero.id);
-
-                          if (isInRoster) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Icon(
-                                Icons.check_circle,
-                                size: 28,
-                                color: theme.colorScheme.primary,
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                hero.powerstats?.strength != null &&
+                                        hero.powerstats?.strength != 'null'
+                                    ? 'Strength: ${hero.powerstats!.strength}'
+                                    : 'Strength: N/A',
+                                style: theme.textTheme.bodyLarge,
                               ),
-                            );
-                          }
+                              Text(
+                                hero.powerstats?.intelligence != null &&
+                                        hero.powerstats?.intelligence != 'null'
+                                    ? 'Intelligence: ${hero.powerstats!.intelligence}'
+                                    : 'Intelligence: N/A',
+                                style: theme.textTheme.bodyLarge,
+                              ),
+                              Text(
+                                hero.powerstats?.combat != null &&
+                                        hero.powerstats?.combat != 'null'
+                                    ? 'Combat: ${hero.powerstats!.combat}'
+                                    : 'Combat: N/A',
+                                style: theme.textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (showIcon)
+                          BlocBuilder<RosterBloc, RosterState>(
+                            builder: (context, state) {
+                              final isInRoster = state.heroes
+                                  .map((h) => h.id)
+                                  .contains(hero.id);
 
-                          return IconButton(
-                            icon: const Icon(Icons.add_circle, size: 28),
-                            color: theme.colorScheme.primary,
-                            onPressed: onAddPressed,
-                          );
-                        },
-                      ),
+                              if (isInRoster) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    size: 28,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                );
+                              }
+
+                              return IconButton(
+                                icon: const Icon(Icons.add_circle, size: 28),
+                                color: theme.colorScheme.primary,
+                                onPressed: onAddPressed,
+                              );
+                            },
+                          ),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

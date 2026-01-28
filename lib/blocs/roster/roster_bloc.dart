@@ -1,19 +1,23 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
+import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart';
 import 'roster_event.dart';
 import 'roster_state.dart';
 
 class RosterBloc extends Bloc<RosterEvent, RosterState> {
+  final ApiManager _apiManager;
   final FirebaseFirestore _firestore;
   final AnalyticsManager _analyticsManager;
   final CrashlyticsManager _crashlyticsManager;
   final String _collectionName = 'heroes';
 
-  RosterBloc({FirebaseFirestore? firestore})
+  RosterBloc({FirebaseFirestore? firestore, ApiManager? apiManager})
     : _firestore = firestore ?? FirebaseFirestore.instance,
+      _apiManager = apiManager ?? ApiManager(),
       _analyticsManager = AnalyticsManager(),
       _crashlyticsManager = CrashlyticsManager(),
       super(RosterInitial()) {
@@ -55,6 +59,13 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
         name: 'add_hero_to_roster',
         parameters: {'hero_name': event.hero.name},
       );
+
+      if (event.hero.image != null && event.hero.image!.url.isNotEmpty) {
+        await downloadAndSaveHeroImage(
+          event.hero.name,
+          event.hero.id.toString(),
+        );
+      }
 
       // Update the hero IDs set
       final updatedHeroes = Set<HeroModel>.from(state.heroes)..add(event.hero);
@@ -131,6 +142,24 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
       // Revert the change on error by reloading
       add(GetRoster());
       emit(RosterError('Failed to remove hero: $e', heroes: state.heroes));
+    }
+  }
+
+  Future<void> downloadAndSaveHeroImage(String heroName, String heroId) async {
+    debugPrint('Downloading image for hero: $heroName');
+    try {
+      await _apiManager.downloadHeroImageIfNeeded(heroName, heroId);
+      _analyticsManager.logEvent(
+        name: 'download_hero_image',
+        parameters: {'hero_id': heroId},
+      );
+    } catch (e, stackTrace) {
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to download and save hero image',
+      );
+      // Handle error as needed
     }
   }
 }

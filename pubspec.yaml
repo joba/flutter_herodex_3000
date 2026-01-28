@@ -47,6 +47,7 @@ dependencies:
   go_router:
   flutter_dotenv: ^6.0.0
   http:
+  path_provider:
 
 dev_dependencies:
   flutter_test:

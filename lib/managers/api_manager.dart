@@ -6,6 +6,7 @@ import 'package:flutter_herodex_3000/models/hero_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_herodex_3000/models/search_model.dart';
+import 'package:path_provider/path_provider.dart';
 
 final imageManager = ImageManager();
 
@@ -77,8 +78,11 @@ class ApiManager {
       );
     }
 
+    // Get the application documents directory (writable)
+    final appDir = await getApplicationDocumentsDirectory();
+
     // Create images directory if it doesn't exist
-    final imagesDir = Directory('assets/hero_images');
+    final imagesDir = Directory('${appDir.path}/hero_images');
     if (!await imagesDir.exists()) {
       await imagesDir.create(recursive: true);
     }
@@ -95,7 +99,7 @@ class ApiManager {
 
     // Create local file path
     final fileName = '${heroId}_image.$extension';
-    final filePath = 'assets/hero_images/$fileName';
+    final filePath = '${imagesDir.path}/$fileName';
     final file = File(filePath);
 
     // Write image bytes to file
@@ -107,7 +111,7 @@ class ApiManager {
   /// Download hero image only if it doesn't exist locally
   Future<String?> downloadHeroImageIfNeeded(String name, String heroId) async {
     // Check if image already exists
-    final existingPath = imageManager.getLocalHeroImagePath(heroId);
+    final existingPath = await imageManager.getLocalHeroImagePath(heroId);
     if (existingPath != null) {
       debugPrint('Image already exists for hero $heroId: $existingPath');
       return existingPath;
