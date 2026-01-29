@@ -48,6 +48,8 @@ dependencies:
   flutter_dotenv: ^6.0.0
   http:
   path_provider:
+  package_info_plus:
+  device_info_plus:
 
 dev_dependencies:
   flutter_test:

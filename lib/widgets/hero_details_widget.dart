@@ -47,217 +47,220 @@ class HeroDetails extends StatelessWidget {
 
         final hero = state.hero;
 
-        return Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Hero Image
-                  if (hero.image?.url != null)
-                    HeroImageProvider(
-                      heroId: hero.id.toString(),
-                      heroName: hero.name,
-                      apiImageUrl: hero.image?.url,
-                      builder: (imageProvider) {
-                        return Container(
-                          width: double.infinity,
-                          height: 400,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.black.withAlpha(0),
-                                  Colors.black.withAlpha(204),
-                                ],
+        return Scaffold(
+          body: SafeArea(
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Hero Image
+                      if (hero.image?.url != null)
+                        HeroImageProvider(
+                          heroId: hero.id.toString(),
+                          heroName: hero.name,
+                          apiImageUrl: hero.image?.url,
+                          builder: (imageProvider) {
+                            return Container(
+                              width: double.infinity,
+                              height: 400,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            padding: const EdgeInsets.all(24),
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              hero.name.toUpperCase(),
-                              style: theme.textTheme.displaySmall?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.black.withAlpha(0),
+                                      Colors.black.withAlpha(204),
+                                    ],
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(24),
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  hero.name.toUpperCase(),
+                                  style: theme.textTheme.displaySmall?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Powerstats
-                        if (hero.powerstats != null) ...[
-                          Text(
-                            'POWERSTATS',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildStatRow(
-                            'Intelligence',
-                            hero.powerstats!.intelligence,
-                            theme,
-                          ),
-                          _buildStatRow(
-                            'Strength',
-                            hero.powerstats!.strength,
-                            theme,
-                          ),
-                          _buildStatRow('Speed', hero.powerstats!.speed, theme),
-                          _buildStatRow(
-                            'Durability',
-                            hero.powerstats!.durability,
-                            theme,
-                          ),
-                          _buildStatRow('Power', hero.powerstats!.power, theme),
-                          _buildStatRow(
-                            'Combat',
-                            hero.powerstats!.combat,
-                            theme,
-                          ),
-                          const SizedBox(height: 24),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Powerstats
+                            if (hero.powerstats != null) ...[
+                              Text(
+                                'POWERSTATS',
+                                style: theme.textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 16),
+                              _buildStatRow(
+                                'Intelligence',
+                                hero.powerstats!.intelligence,
+                                theme,
+                              ),
+                              _buildStatRow(
+                                'Strength',
+                                hero.powerstats!.strength,
+                                theme,
+                              ),
+                              _buildStatRow(
+                                'Speed',
+                                hero.powerstats!.speed,
+                                theme,
+                              ),
+                              _buildStatRow(
+                                'Durability',
+                                hero.powerstats!.durability,
+                                theme,
+                              ),
+                              _buildStatRow(
+                                'Power',
+                                hero.powerstats!.power,
+                                theme,
+                              ),
+                              _buildStatRow(
+                                'Combat',
+                                hero.powerstats!.combat,
+                                theme,
+                              ),
+                              const SizedBox(height: 24),
+                            ],
 
-                        // Biography
-                        if (hero.biography != null) ...[
-                          Text(
-                            'BIOGRAPHY',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildInfoRow(
-                            'Full Name',
-                            hero.biography!.fullName,
-                            theme,
-                          ),
-                          _buildInfoRow(
-                            'Alter Egos',
-                            hero.biography!.alterEgos,
-                            theme,
-                          ),
-                          _buildInfoRow(
-                            'Place of Birth',
-                            hero.biography!.placeOfBirth,
-                            theme,
-                          ),
-                          _buildInfoRow(
-                            'First Appearance',
-                            hero.biography!.firstAppearance,
-                            theme,
-                          ),
-                          _buildInfoRow(
-                            'Publisher',
-                            hero.biography!.publisher,
-                            theme,
-                          ),
-                          const SizedBox(height: 24),
-                        ],
+                            // Biography
+                            if (hero.biography != null) ...[
+                              Text(
+                                'BIOGRAPHY',
+                                style: theme.textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 16),
+                              _buildInfoRow(
+                                'Full Name',
+                                hero.biography!.fullName,
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'Alter Egos',
+                                hero.biography!.alterEgos,
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'Place of Birth',
+                                hero.biography!.placeOfBirth,
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'First Appearance',
+                                hero.biography!.firstAppearance,
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'Publisher',
+                                hero.biography!.publisher,
+                                theme,
+                              ),
+                              const SizedBox(height: 24),
+                            ],
 
-                        // Appearance
-                        if (hero.appearance != null) ...[
-                          Text(
-                            'APPEARANCE',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildInfoRow(
-                            'Gender',
-                            hero.appearance!.gender,
-                            theme,
-                          ),
-                          _buildInfoRow('Race', hero.appearance!.race, theme),
-                          _buildInfoRow(
-                            'Height',
-                            hero.appearance!.height?.join(', '),
-                            theme,
-                          ),
-                          _buildInfoRow(
-                            'Weight',
-                            hero.appearance!.weight?.join(', '),
-                            theme,
-                          ),
-                          const SizedBox(height: 24),
-                        ],
+                            // Appearance
+                            if (hero.appearance != null) ...[
+                              Text(
+                                'APPEARANCE',
+                                style: theme.textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 16),
+                              _buildInfoRow(
+                                'Gender',
+                                hero.appearance!.gender,
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'Race',
+                                hero.appearance!.race,
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'Height',
+                                hero.appearance!.height?.join(', '),
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'Weight',
+                                hero.appearance!.weight?.join(', '),
+                                theme,
+                              ),
+                              const SizedBox(height: 24),
+                            ],
 
-                        // Work
-                        if (hero.work != null) ...[
-                          Text(
-                            'WORK',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildInfoRow(
-                            'Occupation',
-                            hero.work!.occupation,
-                            theme,
-                          ),
-                          _buildInfoRow('Base', hero.work!.base, theme),
-                          const SizedBox(height: 24),
-                        ],
+                            // Work
+                            if (hero.work != null) ...[
+                              Text('WORK', style: theme.textTheme.titleMedium),
+                              const SizedBox(height: 16),
+                              _buildInfoRow(
+                                'Occupation',
+                                hero.work!.occupation,
+                                theme,
+                              ),
+                              _buildInfoRow('Base', hero.work!.base, theme),
+                              const SizedBox(height: 24),
+                            ],
 
-                        // Connections
-                        if (hero.connections != null) ...[
-                          Text(
-                            'CONNECTIONS',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildInfoRow(
-                            'Group Affiliation',
-                            hero.connections!.groupAffiliation,
-                            theme,
-                          ),
-                          _buildInfoRow(
-                            'Relatives',
-                            hero.connections!.relatives,
-                            theme,
-                          ),
-                        ],
-                      ],
-                    ),
+                            // Connections
+                            if (hero.connections != null) ...[
+                              Text(
+                                'CONNECTIONS',
+                                style: theme.textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 16),
+                              _buildInfoRow(
+                                'Group Affiliation',
+                                hero.connections!.groupAffiliation,
+                                theme,
+                              ),
+                              _buildInfoRow(
+                                'Relatives',
+                                hero.connections!.relatives,
+                                theme,
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            // Back button
-            Positioned(
-              top: 16,
-              left: 16,
-              child: SafeArea(
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  color: Colors.white,
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.black.withOpacity(0.5),
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
                 ),
-              ),
+                // Back button
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: SafeArea(
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      color: Colors.white,
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.black.withOpacity(0.5),
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

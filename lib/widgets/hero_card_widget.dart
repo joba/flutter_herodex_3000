@@ -72,21 +72,21 @@ class HeroCard extends StatelessWidget {
                                       hero.powerstats?.strength != 'null'
                                   ? 'Strength: ${hero.powerstats!.strength}'
                                   : 'Strength: N/A',
-                              style: theme.textTheme.bodyLarge,
+                              style: theme.textTheme.displayMedium,
                             ),
                             Text(
                               hero.powerstats?.intelligence != null &&
                                       hero.powerstats?.intelligence != 'null'
                                   ? 'Intelligence: ${hero.powerstats!.intelligence}'
                                   : 'Intelligence: N/A',
-                              style: theme.textTheme.bodyLarge,
+                              style: theme.textTheme.displayMedium,
                             ),
                             Text(
                               hero.powerstats?.combat != null &&
                                       hero.powerstats?.combat != 'null'
                                   ? 'Combat: ${hero.powerstats!.combat}'
                                   : 'Combat: N/A',
-                              style: theme.textTheme.bodyLarge,
+                              style: theme.textTheme.displayMedium,
                             ),
                           ],
                         ),

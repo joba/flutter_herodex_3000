@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 32),
                   Text(
                     AppTexts.news.latestNews.toUpperCase(),
-                    style: theme.textTheme.titleLarge,
+                    style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 16),
                   Expanded(

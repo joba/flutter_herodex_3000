@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
+import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
 import 'package:flutter_herodex_3000/config/app_router.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/screens/home_screen.dart';
@@ -51,11 +52,18 @@ class MyApp extends StatelessWidget {
             ),
           ),
           BlocProvider<RosterBloc>(create: (context) => RosterBloc()),
+          BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: appTheme,
-          routerConfig: appRouter,
+        child: BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: themeMode,
+              routerConfig: appRouter,
+            );
+          },
         ),
       ),
     );
