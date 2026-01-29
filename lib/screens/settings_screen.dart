@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
+import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
+import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -180,6 +183,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
+
+                      UpperCaseElevatedButton(
+                        onPressed: () async {
+                          await context.read<AuthCubit>().signOut();
+                          if (context.mounted) {
+                            context.go('/auth');
+                          }
+                        },
+                        text: 'Sign Out',
+                      ),
 
                       // Copyright
                       const SizedBox(height: 8),

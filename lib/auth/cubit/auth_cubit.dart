@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
 import 'package:flutter_herodex_3000/auth/repository/auth_repository.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
@@ -21,9 +22,11 @@ class AuthCubit extends Cubit<AuthState> {
        _crashlyticsManager = crashlyticsManager ?? CrashlyticsManager(),
        super(AuthInitial()) {
     _authStateSubscription = _authRepository.authStateChanges.listen((user) {
+      debugPrint('Auth state changed: $user');
       if (user != null) {
         emit(AuthAuthenticated(user));
       } else {
+        debugPrint('No authenticated user found');
         emit(AuthUnauthenticated());
       }
     });
