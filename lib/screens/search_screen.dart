@@ -94,22 +94,6 @@ class _SearchViewState extends State<SearchView> {
                     hintText: AppTexts.search.hint,
                     border: OutlineInputBorder(),
                   ),
-                  onSubmitted: (_) => _searchHero(),
-                ),
-                const SizedBox(height: 16),
-                BlocBuilder<SearchBloc, SearchState>(
-                  builder: (context, state) {
-                    return ElevatedButton(
-                      onPressed: state is SearchLoading ? null : _searchHero,
-                      child: state is SearchLoading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : Text(AppTexts.search.search.toUpperCase()),
-                    );
-                  },
                 ),
                 const SizedBox(height: 20),
                 Expanded(
@@ -176,6 +160,9 @@ class _SearchViewState extends State<SearchView> {
                             ),
                           ],
                         );
+                      }
+                      if (state is SearchLoading) {
+                        return const Center(child: CircularProgressIndicator());
                       }
                       if (state is SearchSuccess) {
                         return Column(
