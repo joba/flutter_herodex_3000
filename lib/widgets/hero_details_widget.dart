@@ -4,6 +4,7 @@ import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_event.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/widgets/hero_image_widget.dart';
 
 class HeroDetails extends StatelessWidget {
   final String id;
@@ -11,6 +12,8 @@ class HeroDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocBuilder<HeroDetailBloc, HeroDetailState>(
       builder: (context, state) {
         if (state is HeroDetailLoading || state is HeroDetailInitial) {
@@ -24,7 +27,7 @@ class HeroDetails extends StatelessWidget {
               children: [
                 Text(
                   state.message,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                  style: TextStyle(color: theme.colorScheme.error),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
@@ -42,7 +45,6 @@ class HeroDetails extends StatelessWidget {
           return Center(child: Text(AppTexts.roster.heroNotFound));
         }
 
-        final theme = Theme.of(context);
         final hero = state.hero;
 
         return Stack(
@@ -53,36 +55,43 @@ class HeroDetails extends StatelessWidget {
                 children: [
                   // Hero Image
                   if (hero.image?.url != null)
-                    Container(
-                      width: double.infinity,
-                      height: 400,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(hero.image!.url),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.black.withAlpha(0),
-                              Colors.black.withAlpha(204),
-                            ],
+                    HeroImageProvider(
+                      heroId: hero.id.toString(),
+                      heroName: hero.name,
+                      apiImageUrl: hero.image?.url,
+                      builder: (imageProvider) {
+                        return Container(
+                          width: double.infinity,
+                          height: 400,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        padding: const EdgeInsets.all(24),
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          hero.name.toUpperCase(),
-                          style: theme.textTheme.displaySmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withAlpha(0),
+                                  Colors.black.withAlpha(204),
+                                ],
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(24),
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              hero.name.toUpperCase(),
+                              style: theme.textTheme.displaySmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
 
                   Padding(
