@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/managers/image_manager.dart';
 
@@ -18,6 +19,12 @@ class HeroImageProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // On web, always use network images as local storage doesn't work the same way
+    if (kIsWeb) {
+      debugPrint('Using network image for hero $heroName (web)');
+      return builder(NetworkImage(apiImageUrl ?? ''));
+    }
+
     final imageManager = ImageManager();
 
     return FutureBuilder<String?>(

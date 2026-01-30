@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageManager {
@@ -8,6 +9,9 @@ class ImageManager {
 
   /// Check if hero image already exists locally
   Future<bool> hasLocalHeroImage(String heroId) async {
+    // Local storage not supported on web
+    if (kIsWeb) return false;
+
     final appDir = await getApplicationDocumentsDirectory();
     final imagesDir = Directory('${appDir.path}/hero_images');
 
@@ -23,6 +27,9 @@ class ImageManager {
 
   /// Get local hero image path if it exists
   Future<String?> getLocalHeroImagePath(String heroId) async {
+    // Local storage not supported on web
+    if (kIsWeb) return null;
+
     final appDir = await getApplicationDocumentsDirectory();
     final imagesDir = Directory('${appDir.path}/hero_images');
 
