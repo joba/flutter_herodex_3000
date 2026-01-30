@@ -252,7 +252,7 @@ class HeroDetails extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back),
                       color: Colors.white,
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.black.withOpacity(0.5),
+                        backgroundColor: Colors.black.withAlpha(128),
                       ),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
