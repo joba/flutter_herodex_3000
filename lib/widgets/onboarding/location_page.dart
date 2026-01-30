@@ -3,12 +3,12 @@ import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class LocationPage extends StatelessWidget {
-  final VoidCallback completeOnboarding;
+  final VoidCallback onNext;
   final bool locationEnabled;
   final ValueChanged<bool> onLocationChanged;
   const LocationPage({
     super.key,
-    required this.completeOnboarding,
+    required this.onNext,
     required this.locationEnabled,
     required this.onLocationChanged,
   });
@@ -49,7 +49,7 @@ class LocationPage extends StatelessWidget {
           ),
           const Spacer(),
           UpperCaseElevatedButton(
-            onPressed: completeOnboarding,
+            onPressed: onNext,
             text: AppTexts.onboarding.finish,
           ),
         ],

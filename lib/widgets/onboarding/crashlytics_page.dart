@@ -3,13 +3,13 @@ import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class CrashlyticsPage extends StatelessWidget {
-  final VoidCallback nextPage;
+  final VoidCallback onNext;
   final bool crashlyticsEnabled;
   final ValueChanged<bool> onCrashlyticsChanged;
 
   const CrashlyticsPage({
     super.key,
-    required this.nextPage,
+    required this.onNext,
     required this.crashlyticsEnabled,
     required this.onCrashlyticsChanged,
   });
@@ -50,7 +50,7 @@ class CrashlyticsPage extends StatelessWidget {
           ),
           const Spacer(),
           UpperCaseElevatedButton(
-            onPressed: nextPage,
+            onPressed: onNext,
             text: AppTexts.common.next,
           ),
         ],

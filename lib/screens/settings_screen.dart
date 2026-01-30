@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
@@ -148,20 +149,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 });
                               },
                             ),
-                            const Divider(height: 1),
-                            SwitchListTile(
-                              title: const Text('Crashlytics'),
-                              subtitle: const Text(
-                                'Automatically report crashes to help fix bugs',
+                            if (!kIsWeb) const Divider(height: 1),
+                            if (!kIsWeb)
+                              SwitchListTile(
+                                title: const Text('Crashlytics'),
+                                subtitle: const Text(
+                                  'Automatically report crashes to help fix bugs',
+                                ),
+                                value: _crashReportingEnabled,
+                                onChanged: (value) async {
+                                  await _crashlyticsManager.updateConsent(
+                                    value,
+                                  );
+                                  setState(() {
+                                    _crashReportingEnabled = value;
+                                  });
+                                },
                               ),
-                              value: _crashReportingEnabled,
-                              onChanged: (value) async {
-                                await _crashlyticsManager.updateConsent(value);
-                                setState(() {
-                                  _crashReportingEnabled = value;
-                                });
-                              },
-                            ),
                             const Divider(height: 1),
                             BlocBuilder<ThemeCubit, ThemeMode>(
                               builder: (context, themeMode) {

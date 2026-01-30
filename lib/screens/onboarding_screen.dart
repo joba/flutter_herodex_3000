@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/analytics_page.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/crashlytics_page.dart';
-// import 'package:flutter_herodex_3000/widgets/onboarding/location_page.dart';
+import 'package:flutter_herodex_3000/widgets/onboarding/location_page.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
@@ -28,9 +29,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   bool _analyticsEnabled = false;
   bool _crashlyticsEnabled = false;
-  final bool _locationEnabled = false;
+  bool _locationEnabled = false;
 
-  static const int _totalPages = 3;
+  static const int _totalPages = kIsWeb ? 3 : 4;
 
   @override
   void dispose() {
@@ -42,8 +43,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_completed', true);
     await widget.analyticsManager.setAnalyticsEnabled(_analyticsEnabled);
-    await widget.crashlyticsManager.updateConsent(_crashlyticsEnabled);
 
+    // Crashlytics is not supported on web
+    if (!kIsWeb) {
+      await widget.crashlyticsManager.updateConsent(_crashlyticsEnabled);
+    }
+
+    // Handle location permission or settings here if needed
     if (mounted) {
       context.go('/auth');
     }
@@ -85,24 +91,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       });
                     },
                   ),
-                  CrashlyticsPage(
-                    nextPage: _completeOnboarding,
-                    crashlyticsEnabled: _crashlyticsEnabled,
-                    onCrashlyticsChanged: (value) {
+                  if (!kIsWeb)
+                    CrashlyticsPage(
+                      onNext: _nextPage,
+                      crashlyticsEnabled: _crashlyticsEnabled,
+                      onCrashlyticsChanged: (value) {
+                        setState(() {
+                          _crashlyticsEnabled = value;
+                        });
+                      },
+                    ),
+                  LocationPage(
+                    onNext: _completeOnboarding,
+                    locationEnabled: _locationEnabled,
+                    onLocationChanged: (value) {
                       setState(() {
-                        _crashlyticsEnabled = value;
+                        _locationEnabled = value;
                       });
                     },
                   ),
-                  // LocationPage(
-                  //   completeOnboarding: _completeOnboarding,
-                  //   locationEnabled: _locationEnabled,
-                  //   onLocationChanged: (value) {
-                  //     setState(() {
-                  //       _locationEnabled = value;
-                  //     });
-                  //   },
-                  // ),
                 ],
               ),
             ),
