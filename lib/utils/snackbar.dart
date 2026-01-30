@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 class AppSnackBar {
   BuildContext context;
   SnackBarBehavior? behavior;
+  ThemeData theme;
 
-  AppSnackBar.of(this.context, {this.behavior = SnackBarBehavior.fixed});
+  AppSnackBar.of(this.context, {this.behavior = SnackBarBehavior.fixed})
+    : theme = Theme.of(context);
 
   void showError(String message) {
     final snackBar = SnackBar(
-      content: Text(message, style: Theme.of(context).textTheme.bodyMedium),
-      backgroundColor: Theme.of(context).colorScheme.error,
+      content: Text(message, style: theme.textTheme.bodyMedium),
+      backgroundColor: theme.colorScheme.error,
       behavior: behavior,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -17,8 +19,13 @@ class AppSnackBar {
 
   void showSuccess(String message) {
     final snackBar = SnackBar(
-      content: Text(message, style: Theme.of(context).textTheme.bodyMedium),
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      content: Text(
+        message,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: theme.colorScheme.onSecondary,
+        ),
+      ),
+      backgroundColor: theme.colorScheme.secondary,
       behavior: behavior,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
