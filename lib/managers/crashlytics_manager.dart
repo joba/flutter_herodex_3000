@@ -1,5 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CrashlyticsManager {
   static final CrashlyticsManager _instance = CrashlyticsManager._internal();
@@ -7,10 +8,14 @@ class CrashlyticsManager {
   CrashlyticsManager._internal();
 
   bool _crashlyticsEnabled = false;
+  bool _isInitialized = false;
 
   /// Initialize crashlytics based on user consent
   Future<void> initialize({required bool userConsent}) async {
     _crashlyticsEnabled = userConsent;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('crashlytics_enabled', userConsent);
+    _isInitialized = true;
 
     if (_crashlyticsEnabled) {
       // Enable crashlytics collection
@@ -78,5 +83,16 @@ class CrashlyticsManager {
     await initialize(userConsent: userConsent);
   }
 
-  bool get isEnabled => _crashlyticsEnabled;
+  /// Load saved preference
+  Future<void> loadPreference() async {
+    if (_isInitialized) return;
+    final prefs = await SharedPreferences.getInstance();
+    final enabled = prefs.getBool('crashlytics_enabled') ?? false;
+    await initialize(userConsent: enabled);
+  }
+
+  Future<bool> get isEnabled async {
+    if (!_isInitialized) await loadPreference();
+    return _crashlyticsEnabled;
+  }
 }

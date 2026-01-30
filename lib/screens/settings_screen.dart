@@ -39,10 +39,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _loadPreferences();
   }
 
-  void _loadPreferences() {
+  void _loadPreferences() async {
+    final analyticsEnabled = await _analyticsManager.isEnabled;
+    final crashLyticsEnabled = await _crashlyticsManager.isEnabled;
+
     setState(() {
-      _analyticsEnabled = _analyticsManager.isEnabled;
-      _crashReportingEnabled = _crashlyticsManager.isEnabled;
+      _analyticsEnabled = analyticsEnabled;
+      _crashReportingEnabled = crashLyticsEnabled;
     });
   }
 
