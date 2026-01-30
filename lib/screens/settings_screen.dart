@@ -86,18 +86,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-              const HerodexLogo(),
-              const SizedBox(height: 32),
-              Text(
-                AppTexts.common.title.toUpperCase(),
-                style: theme.textTheme.headlineLarge,
-              ),
-              const SizedBox(height: 48),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            const HerodexLogo(),
+                            const SizedBox(height: 32),
+                            Text(
+                              AppTexts.common.title.toUpperCase(),
+                              style: theme.textTheme.headlineLarge,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 48),
                       // Build Version
                       _buildSectionTitle('Version', theme),
                       const SizedBox(height: 8),
