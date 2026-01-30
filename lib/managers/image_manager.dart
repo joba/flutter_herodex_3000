@@ -50,4 +50,31 @@ class ImageManager {
     }
     return null;
   }
+
+  /// Delete local hero image if it exists
+  Future<bool> deleteLocalHeroImage(String heroId) async {
+    // Local storage not supported on web
+    if (kIsWeb) return false;
+
+    try {
+      final appDir = await getApplicationDocumentsDirectory();
+      final imagesDir = Directory('${appDir.path}/hero_images');
+
+      final extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+      bool deleted = false;
+
+      for (final ext in extensions) {
+        final file = File('${imagesDir.path}/${heroId}_image.$ext');
+        if (file.existsSync()) {
+          await file.delete();
+          deleted = true;
+        }
+      }
+
+      return deleted;
+    } catch (e) {
+      debugPrint('Error deleting local hero image: $e');
+      return false;
+    }
+  }
 }

@@ -137,4 +137,9 @@ class ApiManager {
       return null;
     }
   }
+
+  /// Delete local hero image
+  Future<bool> deleteLocalHeroImage(String heroId) async {
+    return await imageManager.deleteLocalHeroImage(heroId);
+  }
 }

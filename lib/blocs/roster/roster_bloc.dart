@@ -126,6 +126,10 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
 
     try {
       await _firestore.collection(_collectionName).doc(event.heroId).delete();
+
+      // Delete local image if it exists
+      await _apiManager.deleteLocalHeroImage(event.heroId);
+
       _analyticsManager.logEvent(
         name: 'remove_hero_from_roster',
         parameters: {'hero_id': event.heroId},
