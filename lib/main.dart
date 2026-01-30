@@ -62,6 +62,14 @@ class MyApp extends StatelessWidget {
               darkTheme: darkTheme,
               themeMode: themeMode,
               routerConfig: appRouter,
+              builder: (context, child) {
+                return Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: child ?? const SizedBox(),
+                  ),
+                );
+              },
             );
           },
         ),
