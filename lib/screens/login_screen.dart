@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
-import 'package:flutter_herodex_3000/styles/colors.dart';
+import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/signup_widget.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
@@ -43,13 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
             _signupAttemptEmail = null;
           }
           // Show error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppColors.error,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+          AppSnackBar.of(
+            context,
+            behavior: SnackBarBehavior.floating,
+          ).showError(state.message);
         } else if (state is AuthAuthenticated) {
           // Close dialog if open
           if (Navigator.canPop(context)) {

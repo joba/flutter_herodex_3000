@@ -5,6 +5,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
+import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/hero_image_widget.dart';
 import 'package:go_router/go_router.dart';
 
@@ -141,9 +142,9 @@ class HeroCard extends StatelessWidget {
           context.read<RosterBloc>().add(
             RemoveHeroFromRoster(hero.id.toString()),
           );
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppTexts.roster.heroRemoved(hero.name))),
-          );
+          AppSnackBar.of(
+            context,
+          ).showSuccess(AppTexts.roster.heroRemoved(hero.name));
         },
         child: cardWidget,
       );

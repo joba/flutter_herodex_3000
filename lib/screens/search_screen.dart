@@ -10,6 +10,7 @@ import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
+import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -66,21 +67,25 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RosterBloc, RosterState>(
-      listener: (context, state) {
-        if (state is RosterSuccess) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
-        } else if (state is RosterError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RosterBloc, RosterState>(
+          listener: (context, state) {
+            if (state is RosterSuccess) {
+              AppSnackBar.of(context).showSuccess(state.message);
+            } else if (state is RosterError) {
+              AppSnackBar.of(context).showError(state.message);
+            }
+          },
+        ),
+        BlocListener<SearchBloc, SearchState>(
+          listener: (context, state) {
+            if (state is SearchError) {
+              AppSnackBar.of(context).showError(state.message);
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: Padding(
@@ -99,14 +104,6 @@ class _SearchViewState extends State<SearchView> {
                 Expanded(
                   child: BlocBuilder<SearchBloc, SearchState>(
                     builder: (context, state) {
-                      if (state is SearchError) {
-                        return Text(
-                          state.message,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                        );
-                      }
                       if (state is SearchInitial &&
                           state.searchHistory.isNotEmpty) {
                         return Column(
