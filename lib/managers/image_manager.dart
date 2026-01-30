@@ -7,6 +7,13 @@ class ImageManager {
   static final ImageManager _instance = ImageManager._internal();
   factory ImageManager() => _instance;
 
+  String getWebImageUrl(String heroId, String heroName) {
+    final String imageBaseUrl =
+        'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg';
+    final nameLowerCase = heroName.toLowerCase().replaceAll(' ', '-');
+    return '$imageBaseUrl/$heroId-$nameLowerCase.jpg';
+  }
+
   /// Check if hero image already exists locally
   Future<bool> hasLocalHeroImage(String heroId) async {
     // Local storage not supported on web

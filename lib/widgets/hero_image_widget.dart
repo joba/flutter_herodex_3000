@@ -19,13 +19,14 @@ class HeroImageProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageManager = ImageManager();
+
     // On web, always use network images as local storage doesn't work the same way
     if (kIsWeb) {
       debugPrint('Using network image for hero $heroName (web)');
-      return builder(NetworkImage(apiImageUrl ?? ''));
+      final webImageUrl = imageManager.getWebImageUrl(heroId, heroName);
+      return builder(NetworkImage(webImageUrl));
     }
-
-    final imageManager = ImageManager();
 
     return FutureBuilder<String?>(
       future: imageManager.getLocalHeroImagePath(heroId),

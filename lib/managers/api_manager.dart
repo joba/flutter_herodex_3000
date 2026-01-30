@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_herodex_3000/managers/image_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart';
 import 'package:http/http.dart' as http;
@@ -18,11 +18,14 @@ class ApiManager {
 
   final String _baseUrl = 'https://superheroapi.com/api';
   final String _apiKey = dotenv.env['SUPERHERO_API_KEY'] ?? '';
-  final String _imageBaseUrl =
-      'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/sm';
+
+  // CORS proxy for web
+  final String _corsProxy = kIsWeb ? 'http://localhost:3000' : '';
 
   Future<SearchModel> searchHeroes(String name) async {
-    final url = '$_baseUrl/$_apiKey/search/$name';
+    final baseUrl = kIsWeb ? _corsProxy : _baseUrl;
+    final apiPath = kIsWeb ? '/api/search/$name' : '/$_apiKey/search/$name';
+    final url = '$baseUrl$apiPath';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -39,7 +42,9 @@ class ApiManager {
   }
 
   Future<HeroModel> getHeroById(String id) async {
-    final url = '$_baseUrl/$_apiKey/$id';
+    final baseUrl = kIsWeb ? _corsProxy : _baseUrl;
+    final apiPath = kIsWeb ? '/api/$id' : '/$_apiKey/$id';
+    final url = '$baseUrl$apiPath';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -109,7 +114,10 @@ class ApiManager {
   }
 
   /// Download hero image only if it doesn't exist locally
-  Future<String?> downloadHeroImageIfNeeded(String name, String heroId) async {
+  Future<String?> downloadHeroImageIfNeeded(
+    String imageUrl,
+    String heroId,
+  ) async {
     // Check if image already exists
     final existingPath = await imageManager.getLocalHeroImagePath(heroId);
     if (existingPath != null) {
@@ -119,8 +127,8 @@ class ApiManager {
 
     // Download if not exists
     try {
-      final nameLowerCase = name.toLowerCase().replaceAll(' ', '-');
-      final imageUrl = '$_imageBaseUrl/$heroId-$nameLowerCase.jpg';
+      // final nameLowerCase = name.toLowerCase().replaceAll(' ', '-');
+      // final imageUrl = '$_imageBaseUrl/$heroId-$nameLowerCase.jpg';
       final localPath = await downloadAndSaveHeroImage(imageUrl, heroId);
       debugPrint('Downloaded new image for hero $heroId: $localPath');
       return localPath;

@@ -48,4 +48,4 @@ app.*.map.json
 lib/firebase_options.dart
 
 *.env
-assets/hero_images/
+/proxy-server/node_modules/

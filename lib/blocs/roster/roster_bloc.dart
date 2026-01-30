@@ -62,7 +62,7 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
 
       if (event.hero.image != null && event.hero.image!.url.isNotEmpty) {
         await downloadAndSaveHeroImage(
-          event.hero.name,
+          event.hero.image!.url,
           event.hero.id.toString(),
         );
       }
@@ -145,10 +145,10 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
     }
   }
 
-  Future<void> downloadAndSaveHeroImage(String heroName, String heroId) async {
-    debugPrint('Downloading image for hero: $heroName');
+  Future<void> downloadAndSaveHeroImage(String imageUrl, String heroId) async {
+    debugPrint('Downloading image for hero: $imageUrl');
     try {
-      await _apiManager.downloadHeroImageIfNeeded(heroName, heroId);
+      await _apiManager.downloadHeroImageIfNeeded(imageUrl, heroId);
       _analyticsManager.logEvent(
         name: 'download_hero_image',
         parameters: {'hero_id': heroId},

@@ -70,9 +70,8 @@ class Connections {
 
 class Image {
   final String url;
-  String? asciiArt;
 
-  Image(this.url, [this.asciiArt]);
+  Image(this.url);
 }
 
 class HeroModel {
@@ -141,9 +140,7 @@ class HeroModel {
               json['connections']['relatives'] ?? '',
             )
           : null,
-      json['image'] != null
-          ? Image(json['image']['url'] ?? '', json['image']['asciiArt'] ?? '')
-          : null,
+      json['image'] != null ? Image(json['image']['url'] ?? '') : null,
     );
   }
 
@@ -191,9 +188,7 @@ class HeroModel {
               'relatives': connections!.relatives,
             }
           : null,
-      'image': image != null
-          ? {'url': image!.url, 'asciiArt': image!.asciiArt}
-          : null,
+      'image': image != null ? {'url': image!.url} : null,
     };
   }
 }
