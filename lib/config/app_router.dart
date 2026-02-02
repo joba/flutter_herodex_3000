@@ -12,7 +12,7 @@ import 'package:flutter_herodex_3000/screens/roster_screen.dart';
 import 'package:flutter_herodex_3000/screens/search_screen.dart';
 import 'package:flutter_herodex_3000/screens/settings_screen.dart';
 import 'package:flutter_herodex_3000/screens/splash_screen.dart';
-import 'package:flutter_herodex_3000/widgets/hero_details_widget.dart';
+import 'package:flutter_herodex_3000/widgets/hero_details/hero_details_widget.dart';
 import 'package:flutter_herodex_3000/widgets/navigation_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
