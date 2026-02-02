@@ -52,7 +52,12 @@ class MyApp extends StatelessWidget {
               analyticsManager: context.read<AnalyticsManager>(),
             ),
           ),
-          BlocProvider<RosterBloc>(create: (context) => RosterBloc()),
+          BlocProvider<RosterBloc>(
+            create: (context) => RosterBloc(
+              analyticsManager: context.read<AnalyticsManager>(),
+              crashlyticsManager: context.read<CrashlyticsManager>(),
+            ),
+          ),
           BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(

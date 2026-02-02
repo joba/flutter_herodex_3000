@@ -55,7 +55,7 @@ class _SearchViewState extends State<SearchView> {
 
   void _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(AppConstants.searchDebounceDuration, () {
       _searchHero();
     });
   }

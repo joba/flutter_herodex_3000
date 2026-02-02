@@ -1,5 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CrashlyticsManager {
@@ -42,7 +43,7 @@ class CrashlyticsManager {
     StackTrace? stackTrace, {
     String? reason,
   }) async {
-    debugPrint(
+    AppLogger.log(
       _crashlyticsEnabled
           ? 'Recording error to Crashlytics: $error'
           : 'Crashlytics is disabled; not recording error.',

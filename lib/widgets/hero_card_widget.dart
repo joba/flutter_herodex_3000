@@ -38,7 +38,20 @@ class HeroCard extends StatelessWidget {
           builder: (imageProvider) => Container(
             height: AppConstants.cardHeight,
             decoration: BoxDecoration(
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+                onError: (exception, stackTrace) => Container(
+                  color: theme.colorScheme.onErrorContainer,
+                  child: Center(
+                    child: Icon(
+                      Icons.broken_image,
+                      color: theme.colorScheme.onError,
+                      size: AppConstants.cardIconSize,
+                    ),
+                  ),
+                ),
+              ),
             ),
             child: Container(
               decoration: BoxDecoration(

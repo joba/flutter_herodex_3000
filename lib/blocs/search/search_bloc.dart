@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'search_event.dart';
 import 'search_state.dart';
@@ -7,7 +8,7 @@ import 'search_state.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final ApiManager _apiManager;
   static const String _historyKey = 'search_history';
-  static const int _maxHistoryItems = 15;
+  static const int _maxHistoryItems = AppConstants.maxSearchHistory;
 
   SearchBloc(this._apiManager) : super(SearchInitial()) {
     on<LoadSearchHistory>(_onLoadSearchHistory);

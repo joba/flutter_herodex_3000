@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/managers/image_manager.dart';
+import 'package:flutter_herodex_3000/utils/logger.dart';
 
 class HeroImageProvider extends StatelessWidget {
   final String heroId;
@@ -23,7 +24,7 @@ class HeroImageProvider extends StatelessWidget {
 
     // On web, always use network images as local storage doesn't work the same way
     if (kIsWeb) {
-      debugPrint('Using network image for hero $heroName (web)');
+      AppLogger.log('Using network image for hero $heroName (web)');
       final webImageUrl = imageManager.getWebImageUrl(heroId, heroName);
       return builder(NetworkImage(webImageUrl));
     }
@@ -33,15 +34,15 @@ class HeroImageProvider extends StatelessWidget {
       builder: (context, snapshot) {
         ImageProvider imageProvider;
 
-        debugPrint(
+        AppLogger.log(
           'FutureBuilder snapshot for hero $heroName: ${snapshot.connectionState}, hasData: ${snapshot.hasData}',
         );
         if (snapshot.hasData && snapshot.data != null) {
-          debugPrint('Using local image for hero $heroName');
+          AppLogger.log('Using local image for hero $heroName');
           // Use local image if available
           imageProvider = FileImage(File(snapshot.data!));
         } else {
-          debugPrint('Using network image for hero $heroName');
+          AppLogger.log('Using network image for hero $heroName');
           // Fall back to network image
           imageProvider = NetworkImage(apiImageUrl ?? '');
         }

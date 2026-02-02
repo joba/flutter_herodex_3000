@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_herodex_3000/managers/image_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart';
+import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_herodex_3000/models/search_model.dart';
@@ -121,7 +122,7 @@ class ApiManager {
     // Check if image already exists
     final existingPath = await imageManager.getLocalHeroImagePath(heroId);
     if (existingPath != null) {
-      debugPrint('Image already exists for hero $heroId: $existingPath');
+      AppLogger.log('Image already exists for hero $heroId: $existingPath');
       return existingPath;
     }
 
@@ -130,10 +131,10 @@ class ApiManager {
       // final nameLowerCase = name.toLowerCase().replaceAll(' ', '-');
       // final imageUrl = '$_imageBaseUrl/$heroId-$nameLowerCase.jpg';
       final localPath = await downloadAndSaveHeroImage(imageUrl, heroId);
-      debugPrint('Downloaded new image for hero $heroId: $localPath');
+      AppLogger.log('Downloaded new image for hero $heroId: $localPath');
       return localPath;
     } catch (e) {
-      debugPrint('Failed to download image for hero $heroId: $e');
+      AppLogger.log('Failed to download image for hero $heroId: $e');
       return null;
     }
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageManager {
@@ -73,7 +74,7 @@ class ImageManager {
 
       return deleted;
     } catch (e) {
-      debugPrint('Error deleting local hero image: $e');
+      AppLogger.log('Error deleting local hero image: $e');
       return false;
     }
   }

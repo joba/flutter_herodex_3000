@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart';
+import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'roster_event.dart';
 import 'roster_state.dart';
 
@@ -154,7 +154,7 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
   }
 
   Future<void> downloadAndSaveHeroImage(String imageUrl, String heroId) async {
-    debugPrint('Downloading image for hero: $imageUrl');
+    AppLogger.log('Downloading image for hero: $imageUrl');
     try {
       await _apiManager.downloadHeroImageIfNeeded(imageUrl, heroId);
       _analyticsManager.logEvent(
