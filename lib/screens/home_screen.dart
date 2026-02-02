@@ -20,94 +20,94 @@ class HomeScreen extends StatelessWidget {
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(32),
-                    decoration: homeCardDecoration(context),
-                    child: Column(
-                      children: [
-                        Text(
-                          AppTexts.home.totalHeroes.toUpperCase(),
-                          style: theme.textTheme.titleLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          '${state.heroCount}',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontSize: 82,
-                            fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(32),
+                      decoration: homeCardDecoration(context),
+                      child: Column(
+                        children: [
+                          Text(
+                            AppTexts.home.totalHeroes.toUpperCase(),
+                            style: theme.textTheme.titleLarge,
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
+                          const SizedBox(height: 16),
+                          Text(
+                            '${state.heroCount}',
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontSize: 82,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 64),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: homeCardDecoration(
+                            context,
+                            color: theme.colorScheme.secondary,
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                AppTexts.home.power.toUpperCase(),
+                                style: theme.textTheme.titleLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                '${state.totalPower}',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: homeCardDecoration(
+                            context,
+                            color: theme.colorScheme.secondary,
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                AppTexts.home.combat.toUpperCase(),
+                                style: theme.textTheme.titleLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                '${state.totalCombat}',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 64),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: homeCardDecoration(
-                          context,
-                          color: theme.colorScheme.secondary,
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              AppTexts.home.power.toUpperCase(),
-                              style: theme.textTheme.titleLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              '${state.totalPower}',
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: homeCardDecoration(
-                          context,
-                          color: theme.colorScheme.secondary,
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              AppTexts.home.combat.toUpperCase(),
-                              style: theme.textTheme.titleLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              '${state.totalCombat}',
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    AppTexts.news.latestNews.toUpperCase(),
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView(
+                    const SizedBox(height: 32),
+                    Text(
+                      AppTexts.news.latestNews.toUpperCase(),
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
                       children: [
                         _NewsItem(text: AppTexts.news.feed10),
                         _NewsItem(text: AppTexts.news.feed9),
@@ -121,8 +121,8 @@ class HomeScreen extends StatelessWidget {
                         _NewsItem(text: AppTexts.news.feed1),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
