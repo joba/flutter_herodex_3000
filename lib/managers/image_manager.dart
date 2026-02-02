@@ -15,24 +15,6 @@ class ImageManager {
     return '$imageBaseUrl/$heroId-$nameLowerCase.jpg';
   }
 
-  /// Check if hero image already exists locally
-  Future<bool> hasLocalHeroImage(String heroId) async {
-    // Local storage not supported on web
-    if (kIsWeb) return false;
-
-    final appDir = await getApplicationDocumentsDirectory();
-    final imagesDir = Directory('${appDir.path}/hero_images');
-
-    final extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    for (final ext in extensions) {
-      final file = File('${imagesDir.path}/${heroId}_image.$ext');
-      if (file.existsSync()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /// Get local hero image path if it exists
   Future<String?> getLocalHeroImagePath(String heroId) async {
     // Local storage not supported on web

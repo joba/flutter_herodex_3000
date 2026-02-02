@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_bloc.dart';
-import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/main.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';

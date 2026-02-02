@@ -70,21 +70,19 @@ class _HeroDetailsState extends State<HeroDetails> {
                     children: [
                       // Hero Image
                       if (hero.image?.url != null)
-                        HeroImageProvider(
-                          heroId: hero.id.toString(),
-                          heroName: hero.name,
-                          apiImageUrl: hero.image?.url,
-                          builder: (imageProvider) {
-                            return Container(
-                              width: double.infinity,
-                              height: 400,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 400,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              HeroImageProvider(
+                                heroId: hero.id.toString(),
+                                heroName: hero.name,
+                                apiImageUrl: hero.image?.url,
+                                fit: BoxFit.cover,
                               ),
-                              child: Container(
+                              Container(
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.topCenter,
@@ -105,8 +103,8 @@ class _HeroDetailsState extends State<HeroDetails> {
                                   ),
                                 ),
                               ),
-                            );
-                          },
+                            ],
+                          ),
                         ),
 
                       Padding(
