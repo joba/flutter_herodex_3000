@@ -60,94 +60,97 @@ class _LoginScreenState extends State<LoginScreen> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(AppConstants.appPaddingBase * 1.5),
-            child: Column(
-              children: [
-                const HerodexLogo(),
-                const SizedBox(height: AppConstants.appPaddingBase * 2),
-                Text(
-                  AppTexts.auth.signIn.toUpperCase(),
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                const SizedBox(height: AppConstants.appPaddingBase * 2),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: AppTexts.auth.emailPlaceholder,
-                        ),
-                        validator: (value) =>
-                            value!.isEmpty ? AppTexts.auth.invalidEmail : null,
-                      ),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: AppTexts.auth.passwordPlaceholder,
-                        ),
-                        obscureText: true,
-                        textInputAction: TextInputAction.done,
-                        onFieldSubmitted: (_) {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthCubit>().signIn(
-                              _emailController.text,
-                              _passwordController.text,
-                            );
-                          }
-                        },
-                        validator: (value) => value!.isEmpty
-                            ? AppTexts.auth.invalidPassword
-                            : null,
-                      ),
-                      const SizedBox(height: AppConstants.appPaddingBase),
-                      BlocBuilder<AuthCubit, AuthState>(
-                        builder: (context, state) {
-                          return Column(
-                            children: [
-                              UpperCaseElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    context.read<AuthCubit>().signIn(
-                                      _emailController.text,
-                                      _passwordController.text,
-                                    );
-                                  }
-                                },
-                                child: state is AuthLoading
-                                    ? const CircularProgressIndicator(
-                                        color: Colors.white,
-                                      )
-                                    : Text(AppTexts.auth.signIn),
-                              ),
-                              const SizedBox(
-                                height: AppConstants.appPaddingBase,
-                              ),
-                              UpperCaseElevatedButton(
-                                onPressed: () async {
-                                  // Show sign-up dialog
-                                  await showDialog<String>(
-                                    context: context,
-                                    builder: (context) {
-                                      return SignupWidget(
-                                        onSignupAttempt: (email) {
-                                          _signupAttemptEmail = email;
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Text(AppTexts.auth.signUp),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const HerodexLogo(),
+                  const SizedBox(height: AppConstants.appPaddingBase * 2),
+                  Text(
+                    AppTexts.auth.signIn.toUpperCase(),
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
-                ),
-              ],
+                  const SizedBox(height: AppConstants.appPaddingBase * 2),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: AppTexts.auth.emailPlaceholder,
+                          ),
+                          validator: (value) => value!.isEmpty
+                              ? AppTexts.auth.invalidEmail
+                              : null,
+                        ),
+                        TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: AppTexts.auth.passwordPlaceholder,
+                          ),
+                          obscureText: true,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (_) {
+                            if (_formKey.currentState!.validate()) {
+                              context.read<AuthCubit>().signIn(
+                                _emailController.text,
+                                _passwordController.text,
+                              );
+                            }
+                          },
+                          validator: (value) => value!.isEmpty
+                              ? AppTexts.auth.invalidPassword
+                              : null,
+                        ),
+                        const SizedBox(height: AppConstants.appPaddingBase),
+                        BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                            return Column(
+                              children: [
+                                UpperCaseElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      context.read<AuthCubit>().signIn(
+                                        _emailController.text,
+                                        _passwordController.text,
+                                      );
+                                    }
+                                  },
+                                  child: state is AuthLoading
+                                      ? const CircularProgressIndicator(
+                                          color: Colors.white,
+                                        )
+                                      : Text(AppTexts.auth.signIn),
+                                ),
+                                const SizedBox(
+                                  height: AppConstants.appPaddingBase,
+                                ),
+                                UpperCaseElevatedButton(
+                                  onPressed: () async {
+                                    // Show sign-up dialog
+                                    await showDialog<String>(
+                                      context: context,
+                                      builder: (context) {
+                                        return SignupWidget(
+                                          onSignupAttempt: (email) {
+                                            _signupAttemptEmail = email;
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text(AppTexts.auth.signUp),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

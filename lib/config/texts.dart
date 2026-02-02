@@ -91,6 +91,7 @@ class _RosterTexts {
   String get empty => 'No heroes in your roster yet';
   String get deleteConfirm => 'Remove hero from roster?';
   String get heroNotFound => 'Hero not found';
+  String get addHero => 'Add Hero to Roster';
   String heroAdded(String name) => '$name added to roster';
   String heroRemoved(String name) => '$name removed from roster';
 }
