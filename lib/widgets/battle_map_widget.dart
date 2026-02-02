@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_herodex_3000/managers/location_manager.dart';
 
 class BattleMapWidget extends StatefulWidget {
-  const BattleMapWidget({super.key});
+  final LocationManager locationManager;
+
+  const BattleMapWidget({super.key, required this.locationManager});
 
   @override
   State<BattleMapWidget> createState() => _BattleMapWidgetState();
@@ -50,35 +53,12 @@ class _BattleMapWidgetState extends State<BattleMapWidget> {
   }
 
   Future<void> _checkLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return;
-    }
-
-    // Permission granted, get location
-    try {
-      final position = await Geolocator.getCurrentPosition();
+    final position = await widget.locationManager.getCurrentPosition();
+    if (position != null) {
       setState(() {
         _userPosition = position;
         _locationPermissionGranted = true;
       });
-    } catch (e) {
-      // Handle error
     }
   }
 
@@ -98,8 +78,8 @@ class _BattleMapWidgetState extends State<BattleMapWidget> {
       clipBehavior: Clip.antiAlias,
       child: FlutterMap(
         options: MapOptions(
-          initialCenter: LatLng(39.8283, -98.5795), // Center of US
-          initialZoom: 4.0,
+          initialCenter: LatLng(57.25592, 16.47252),
+          initialZoom: 10.0,
           minZoom: 3.0,
           maxZoom: 18.0,
         ),

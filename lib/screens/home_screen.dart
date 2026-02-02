@@ -4,6 +4,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/decorations.dart';
 import 'package:flutter_herodex_3000/widgets/heroes_alignment_bar.dart';
@@ -129,7 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 32),
                     Text('BATTLE ZONES', style: theme.textTheme.titleMedium),
                     const SizedBox(height: 16),
-                    const BattleMapWidget(),
+                    BattleMapWidget(
+                      locationManager: context.read<LocationManager>(),
+                    ),
                     const SizedBox(height: 32),
                     Text(
                       AppTexts.news.latestNews.toUpperCase(),
