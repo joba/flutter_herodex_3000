@@ -8,8 +8,8 @@ class HeroDetailBloc extends Bloc<HeroDetailEvent, HeroDetailState> {
   final ApiManager _apiManager;
   final RosterBloc? _rosterBloc;
 
-  HeroDetailBloc({ApiManager? apiManager, RosterBloc? rosterBloc})
-    : _apiManager = apiManager ?? ApiManager(),
+  HeroDetailBloc({required ApiManager apiManager, RosterBloc? rosterBloc})
+    : _apiManager = apiManager,
       _rosterBloc = rosterBloc,
       super(HeroDetailInitial()) {
     on<LoadHeroDetail>(_onLoadHeroDetail);

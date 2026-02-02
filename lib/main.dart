@@ -7,6 +7,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
 import 'package:flutter_herodex_3000/config/app_router.dart';
+import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/screens/home_screen.dart';
 import 'package:flutter_herodex_3000/screens/splash_screen.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<CrashlyticsManager>(
           create: (context) => CrashlyticsManager(),
         ),
+        RepositoryProvider<ApiManager>(create: (context) => ApiManager()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<RosterBloc>(
             create: (context) => RosterBloc(
+              apiManager: context.read<ApiManager>(),
               analyticsManager: context.read<AnalyticsManager>(),
               crashlyticsManager: context.read<CrashlyticsManager>(),
             ),

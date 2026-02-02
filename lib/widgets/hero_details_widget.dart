@@ -6,9 +6,21 @@ import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/widgets/hero_image_widget.dart';
 
-class HeroDetails extends StatelessWidget {
+class HeroDetails extends StatefulWidget {
   final String id;
   const HeroDetails({super.key, required this.id});
+
+  @override
+  State<HeroDetails> createState() => _HeroDetailsState();
+}
+
+class _HeroDetailsState extends State<HeroDetails> {
+  @override
+  void initState() {
+    super.initState();
+    // Load hero detail when widget is initialized
+    context.read<HeroDetailBloc>().add(LoadHeroDetail(widget.id));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +44,9 @@ class HeroDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () =>
-                      context.read<HeroDetailBloc>().add(LoadHeroDetail(id)),
+                  onPressed: () => context.read<HeroDetailBloc>().add(
+                    LoadHeroDetail(widget.id),
+                  ),
                   child: Text(AppTexts.common.retry),
                 ),
               ],

@@ -12,10 +12,7 @@ import 'package:path_provider/path_provider.dart';
 final imageManager = ImageManager();
 
 class ApiManager {
-  // Create a singleton instance
-  ApiManager._internal();
-  static final ApiManager _instance = ApiManager._internal();
-  factory ApiManager() => _instance;
+  ApiManager();
 
   final String _baseUrl = 'https://superheroapi.com/api';
   final String _apiKey = dotenv.env['SUPERHERO_API_KEY'] ?? '';

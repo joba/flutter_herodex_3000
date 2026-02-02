@@ -17,13 +17,13 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
 
   RosterBloc({
     FirebaseFirestore? firestore,
-    ApiManager? apiManager,
-    AnalyticsManager? analyticsManager,
-    CrashlyticsManager? crashlyticsManager,
+    required ApiManager apiManager,
+    required AnalyticsManager analyticsManager,
+    required CrashlyticsManager crashlyticsManager,
   }) : _firestore = firestore ?? FirebaseFirestore.instance,
-       _apiManager = apiManager ?? ApiManager(),
-       _analyticsManager = analyticsManager ?? AnalyticsManager(),
-       _crashlyticsManager = crashlyticsManager ?? CrashlyticsManager(),
+       _apiManager = apiManager,
+       _analyticsManager = analyticsManager,
+       _crashlyticsManager = crashlyticsManager,
        super(RosterInitial()) {
     on<AddHeroToRoster>(_onAddHeroToRoster);
     on<GetHeroById>(_onGetHeroById);

@@ -5,6 +5,7 @@ import 'package:flutter_herodex_3000/blocs/hero_detail/hero_detail_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/main.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
+import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/screens/home_screen.dart';
 import 'package:flutter_herodex_3000/screens/onboarding_screen.dart';
@@ -94,9 +95,10 @@ final appRouter = GoRouter(
         }
 
         return BlocProvider(
-          create: (context) =>
-              HeroDetailBloc(rosterBloc: rosterBloc)
-                ..add(LoadHeroDetail(heroId)),
+          create: (context) => HeroDetailBloc(
+            apiManager: context.read<ApiManager>(),
+            rosterBloc: rosterBloc,
+          ),
           child: HeroDetails(id: heroId),
         );
       },
