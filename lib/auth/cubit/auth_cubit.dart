@@ -33,6 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signIn(String email, String password) async {
+    emit(AuthLoading());
     try {
       await _authRepository.signIn(email: email, password: password);
       _analyticsManager.logEvent(

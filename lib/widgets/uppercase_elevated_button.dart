@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class UpperCaseElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
-  final String text;
   final ButtonStyle? style;
+  final Widget child;
 
   const UpperCaseElevatedButton({
     super.key,
     required this.onPressed,
-    required this.text,
+    required this.child,
     this.style,
   });
 
@@ -17,7 +17,7 @@ class UpperCaseElevatedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: style,
-      child: Text(text.toUpperCase()),
+      child: child is Text ? Text((child as Text).data!.toUpperCase()) : child,
     );
   }
 }

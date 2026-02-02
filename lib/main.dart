@@ -117,7 +117,9 @@ class AuthFlow extends StatelessWidget {
       ],
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
-          if (state is AuthUnauthenticated || state is AuthError) {
+          if (state is AuthUnauthenticated ||
+              state is AuthError ||
+              state is AuthLoading) {
             return const LoginScreen();
           }
           // Show splash while loading roster after authentication

@@ -102,33 +102,47 @@ class _LoginScreenState extends State<LoginScreen> {
                             : null,
                       ),
                       const SizedBox(height: AppConstants.appPaddingBase),
-                      UpperCaseElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthCubit>().signIn(
-                              _emailController.text,
-                              _passwordController.text,
-                            );
-                          }
-                        },
-                        text: AppTexts.auth.signIn,
-                      ),
-                      const SizedBox(height: AppConstants.appPaddingBase),
-                      UpperCaseElevatedButton(
-                        onPressed: () async {
-                          // Show sign-up dialog
-                          await showDialog<String>(
-                            context: context,
-                            builder: (context) {
-                              return SignupWidget(
-                                onSignupAttempt: (email) {
-                                  _signupAttemptEmail = email;
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          return Column(
+                            children: [
+                              UpperCaseElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    context.read<AuthCubit>().signIn(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
+                                  }
                                 },
-                              );
-                            },
+                                child: state is AuthLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : Text(AppTexts.auth.signIn),
+                              ),
+                              const SizedBox(
+                                height: AppConstants.appPaddingBase,
+                              ),
+                              UpperCaseElevatedButton(
+                                onPressed: () async {
+                                  // Show sign-up dialog
+                                  await showDialog<String>(
+                                    context: context,
+                                    builder: (context) {
+                                      return SignupWidget(
+                                        onSignupAttempt: (email) {
+                                          _signupAttemptEmail = email;
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Text(AppTexts.auth.signUp),
+                              ),
+                            ],
                           );
                         },
-                        text: AppTexts.auth.signUp,
                       ),
                     ],
                   ),

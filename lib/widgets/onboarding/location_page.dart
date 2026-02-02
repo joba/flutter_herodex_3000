@@ -50,7 +50,7 @@ class LocationPage extends StatelessWidget {
           const Spacer(),
           UpperCaseElevatedButton(
             onPressed: onNext,
-            text: AppTexts.onboarding.finish,
+            child: Text(AppTexts.onboarding.finish),
           ),
         ],
       ),

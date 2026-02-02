@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
+import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class SignupWidget extends StatefulWidget {
@@ -55,9 +57,9 @@ class _SignupWidgetState extends State<SignupWidget> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          text: 'Cancel',
+          child: Text(AppTexts.common.cancel),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: AppConstants.appPaddingBase * 2),
         UpperCaseElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
@@ -68,7 +70,7 @@ class _SignupWidgetState extends State<SignupWidget> {
               );
             }
           },
-          text: 'Save',
+          child: Text(AppTexts.common.save),
         ),
       ],
     );

@@ -207,7 +207,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             context.go('/auth');
                           }
                         },
-                        text: 'Sign Out',
+                        child: Text(AppTexts.auth.signOut),
                       ),
 
                       // Copyright

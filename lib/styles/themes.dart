@@ -35,7 +35,7 @@ ThemeData get darkTheme {
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.onPrimary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        minimumSize: const Size.fromHeight(48), // Full width + 48px height
+        minimumSize: const Size.fromHeight(62), // Full width + 62px height
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         textStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500),
       ),
@@ -74,7 +74,7 @@ ThemeData get lightTheme {
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        minimumSize: const Size.fromHeight(48),
+        minimumSize: const Size.fromHeight(62),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         textStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500),
       ),

@@ -64,6 +64,7 @@ class _AuthTexts {
 
   String get signIn => 'Sign In';
   String get signUp => 'Sign Up';
+  String get signOut => 'Sign Out';
   String get emailPlaceholder => 'Email';
   String get passwordPlaceholder => 'Password';
   String get invalidEmail => 'Please enter an email';

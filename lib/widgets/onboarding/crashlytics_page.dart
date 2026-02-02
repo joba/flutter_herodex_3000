@@ -51,7 +51,7 @@ class CrashlyticsPage extends StatelessWidget {
           const Spacer(),
           UpperCaseElevatedButton(
             onPressed: onNext,
-            text: AppTexts.common.next,
+            child: Text(AppTexts.common.next),
           ),
         ],
       ),
