@@ -33,6 +33,9 @@ class HeroImageProvider extends StatelessWidget {
       builder: (context, snapshot) {
         ImageProvider imageProvider;
 
+        debugPrint(
+          'FutureBuilder snapshot for hero $heroName: ${snapshot.connectionState}, hasData: ${snapshot.hasData}',
+        );
         if (snapshot.hasData && snapshot.data != null) {
           debugPrint('Using local image for hero $heroName');
           // Use local image if available

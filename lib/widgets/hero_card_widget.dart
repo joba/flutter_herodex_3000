@@ -26,6 +26,7 @@ class HeroCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     final cardWidget = Card(
+      margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => context.push('/details/${hero.id}'),
@@ -129,27 +130,33 @@ class HeroCard extends StatelessWidget {
 
     // Only make it dismissible when showIcon is false (roster screen)
     if (!showIcon) {
-      return Dismissible(
-        key: Key(hero.id.toString()),
-        direction: DismissDirection.endToStart,
-        background: Container(
-          color: theme.colorScheme.error,
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: const Icon(Icons.delete, color: Colors.white),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Dismissible(
+          key: Key(hero.id.toString()),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            color: theme.colorScheme.error,
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: const Icon(Icons.delete, color: Colors.white),
+          ),
+          onDismissed: (direction) {
+            context.read<RosterBloc>().add(
+              RemoveHeroFromRoster(hero.id.toString()),
+            );
+            AppSnackBar.of(
+              context,
+            ).showSuccess(AppTexts.roster.heroRemoved(hero.name));
+          },
+          child: cardWidget,
         ),
-        onDismissed: (direction) {
-          context.read<RosterBloc>().add(
-            RemoveHeroFromRoster(hero.id.toString()),
-          );
-          AppSnackBar.of(
-            context,
-          ).showSuccess(AppTexts.roster.heroRemoved(hero.name));
-        },
-        child: cardWidget,
       );
     }
 
-    return cardWidget;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: cardWidget,
+    );
   }
 }
