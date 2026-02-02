@@ -5,6 +5,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/hero_image_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -35,7 +36,7 @@ class HeroCard extends StatelessWidget {
           heroName: hero.name,
           apiImageUrl: hero.image?.url,
           builder: (imageProvider) => Container(
-            height: 200,
+            height: AppConstants.cardHeight,
             decoration: BoxDecoration(
               image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
@@ -50,7 +51,7 @@ class HeroCard extends StatelessWidget {
                   ],
                 ),
               ),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppConstants.cardPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -105,14 +106,17 @@ class HeroCard extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Icon(
                                   Icons.check_circle,
-                                  size: 28,
+                                  size: AppConstants.cardIconSize,
                                   color: theme.colorScheme.primary,
                                 ),
                               );
                             }
 
                             return IconButton(
-                              icon: const Icon(Icons.add_circle, size: 28),
+                              icon: const Icon(
+                                Icons.add_circle,
+                                size: AppConstants.cardIconSize,
+                              ),
                               color: theme.colorScheme.primary,
                               onPressed: onAddPressed,
                             );
@@ -131,7 +135,7 @@ class HeroCard extends StatelessWidget {
     // Only make it dismissible when showIcon is false (roster screen)
     if (!showIcon) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        padding: const EdgeInsets.symmetric(vertical: AppConstants.cardPadding),
         child: Dismissible(
           key: Key(hero.id.toString()),
           direction: DismissDirection.endToStart,
@@ -155,7 +159,7 @@ class HeroCard extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: AppConstants.cardPadding),
       child: cardWidget,
     );
   }

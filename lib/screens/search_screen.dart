@@ -10,6 +10,7 @@ import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
 
@@ -89,7 +90,7 @@ class _SearchViewState extends State<SearchView> {
       child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(AppConstants.appPaddingBase),
             child: Column(
               children: [
                 TextField(
@@ -100,7 +101,7 @@ class _SearchViewState extends State<SearchView> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppConstants.appPaddingBase),
                 Expanded(
                   child: BlocBuilder<SearchBloc, SearchState>(
                     builder: (context, state) {
@@ -128,7 +129,9 @@ class _SearchViewState extends State<SearchView> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(
+                              height: AppConstants.appPaddingBase / 2,
+                            ),
                             Expanded(
                               child: ListView.builder(
                                 itemCount: state.searchHistory.length,
@@ -138,7 +141,10 @@ class _SearchViewState extends State<SearchView> {
                                     leading: const Icon(Icons.history),
                                     title: Text(query),
                                     trailing: IconButton(
-                                      icon: const Icon(Icons.close, size: 20),
+                                      icon: const Icon(
+                                        Icons.close,
+                                        size: AppConstants.cardIconSize,
+                                      ),
                                       onPressed: () {
                                         context.read<SearchBloc>().add(
                                           RemoveFromSearchHistory(query),
@@ -169,7 +175,7 @@ class _SearchViewState extends State<SearchView> {
                                 state.result.results.length,
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppConstants.appPaddingBase),
                             Expanded(
                               child: ListView.builder(
                                 itemCount: state.result.results.length,

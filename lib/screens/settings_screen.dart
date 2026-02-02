@@ -7,6 +7,7 @@ import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 import 'package:go_router/go_router.dart';
@@ -86,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(AppConstants.appPaddingBase * 1.5),
           child: Column(
             children: [
               Expanded(
@@ -98,7 +99,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Column(
                           children: [
                             const HerodexLogo(),
-                            const SizedBox(height: 32),
+                            const SizedBox(
+                              height: AppConstants.appPaddingBase * 2,
+                            ),
                             Text(
                               AppTexts.common.title.toUpperCase(),
                               style: theme.textTheme.headlineLarge,
@@ -106,10 +109,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 48),
+                      const SizedBox(height: AppConstants.appPaddingBase * 3),
                       // Build Version
                       _buildSectionTitle('Version', theme),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppConstants.appPaddingBase / 2),
                       _buildInfoCard(
                         'App Version',
                         _version.isEmpty ? 'Loading...' : _version,
@@ -120,11 +123,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         _buildNumber.isEmpty ? 'Loading...' : _buildNumber,
                         theme,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppConstants.appPaddingBase * 3),
 
                       // System Status
                       _buildSectionTitle('System Status', theme),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppConstants.appPaddingBase / 2),
                       _buildInfoCard(
                         'Platform',
                         _osVersion.isEmpty ? 'Loading...' : _osVersion,
@@ -135,11 +138,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         _deviceModel.isEmpty ? 'Loading...' : _deviceModel,
                         theme,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppConstants.appPaddingBase * 3),
 
                       // Preferences
                       _buildSectionTitle('Preferences', theme),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppConstants.appPaddingBase / 2),
                       Card(
                         child: Column(
                           children: [
@@ -195,7 +198,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppConstants.appPaddingBase * 3),
 
                       UpperCaseElevatedButton(
                         onPressed: () async {
@@ -208,12 +211,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
 
                       // Copyright
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppConstants.appPaddingBase / 2),
                       SizedBox(
                         width: double.infinity,
                         child: Card(
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(
+                              AppConstants.appPaddingBase,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -221,7 +226,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   '© $currentYear ${AppTexts.common.title}',
                                   style: theme.textTheme.bodyLarge,
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(
+                                  height: AppConstants.appPaddingBase / 2,
+                                ),
                                 Text(
                                   'All rights reserved.',
                                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -246,7 +253,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSectionTitle(String title, ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding: const EdgeInsets.only(left: AppConstants.appPaddingBase / 4),
       child: Text(
         title.toUpperCase(),
         style: theme.textTheme.titleMedium?.copyWith(
@@ -259,9 +266,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildInfoCard(String label, String value, ThemeData theme) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8.0),
+      margin: const EdgeInsets.only(bottom: AppConstants.appPaddingBase / 2),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppConstants.appPaddingBase),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/signup_widget.dart';
@@ -58,16 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(AppConstants.appPaddingBase * 1.5),
             child: Column(
               children: [
                 const HerodexLogo(),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppConstants.appPaddingBase * 2),
                 Text(
                   AppTexts.auth.signIn.toUpperCase(),
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppConstants.appPaddingBase * 2),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? AppTexts.auth.invalidPassword
                             : null,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppConstants.appPaddingBase),
                       UpperCaseElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -112,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         text: AppTexts.auth.signIn,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppConstants.appPaddingBase),
                       UpperCaseElevatedButton(
                         onPressed: () async {
                           // Show sign-up dialog

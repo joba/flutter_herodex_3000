@@ -17,6 +17,7 @@ import 'package:flutter_herodex_3000/auth/repository/auth_repository.dart';
 import 'package:flutter_herodex_3000/firebase_options.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/screens/login_screen.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
@@ -65,7 +66,9 @@ class MyApp extends StatelessWidget {
               builder: (context, child) {
                 return Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1200),
+                    constraints: const BoxConstraints(
+                      maxWidth: AppConstants.appMaxWidth,
+                    ),
                     child: child ?? const SizedBox(),
                   ),
                 );

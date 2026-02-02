@@ -4,27 +4,40 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/decorations.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Load roster when screen is opened
+    context.read<RosterBloc>().add(GetRoster());
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // Load roster when screen is opened
-    context.read<RosterBloc>().add(GetRoster());
     return BlocBuilder<RosterBloc, RosterState>(
       builder: (context, state) {
         return Scaffold(
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(AppConstants.appPaddingBase),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(32),
+                      padding: const EdgeInsets.all(
+                        AppConstants.appPaddingBase * 2,
+                      ),
                       decoration: homeCardDecoration(context),
                       child: Column(
                         children: [
@@ -33,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                             style: theme.textTheme.titleLarge,
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppConstants.appPaddingBase),
                           Text(
                             '${state.heroCount}',
                             style: theme.textTheme.titleLarge?.copyWith(
@@ -45,12 +58,14 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 64),
+                    const SizedBox(height: AppConstants.appPaddingBase * 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(
+                            AppConstants.appPaddingBase,
+                          ),
                           decoration: homeCardDecoration(
                             context,
                             color: theme.colorScheme.secondary,
@@ -62,7 +77,9 @@ class HomeScreen extends StatelessWidget {
                                 style: theme.textTheme.titleLarge,
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(
+                                height: AppConstants.appPaddingBase,
+                              ),
                               Text(
                                 '${state.totalPower}',
                                 style: theme.textTheme.titleLarge?.copyWith(
@@ -75,7 +92,9 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(
+                            AppConstants.appPaddingBase,
+                          ),
                           decoration: homeCardDecoration(
                             context,
                             color: theme.colorScheme.secondary,
@@ -87,7 +106,9 @@ class HomeScreen extends StatelessWidget {
                                 style: theme.textTheme.titleLarge,
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(
+                                height: AppConstants.appPaddingBase,
+                              ),
                               Text(
                                 '${state.totalCombat}',
                                 style: theme.textTheme.titleLarge?.copyWith(
@@ -101,12 +122,12 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppConstants.appPaddingBase * 2),
                     Text(
                       AppTexts.news.latestNews.toUpperCase(),
                       style: theme.textTheme.titleMedium,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppConstants.appPaddingBase),
                     Column(
                       children: [
                         _NewsItem(text: AppTexts.news.feed10),
@@ -140,14 +161,14 @@ class _NewsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: AppConstants.appPaddingBase),
+      padding: const EdgeInsets.all(AppConstants.appPaddingBase),
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).colorScheme.primary.withAlpha(30),
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -155,9 +176,9 @@ class _NewsItem extends StatelessWidget {
           Icon(
             Icons.warning_amber,
             color: Theme.of(context).colorScheme.error,
-            size: 20,
+            size: AppConstants.appPaddingBase,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppConstants.appPaddingBase),
           Expanded(
             child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
           ),

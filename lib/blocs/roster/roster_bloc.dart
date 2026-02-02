@@ -15,12 +15,16 @@ class RosterBloc extends Bloc<RosterEvent, RosterState> {
   final CrashlyticsManager _crashlyticsManager;
   final String _collectionName = 'heroes';
 
-  RosterBloc({FirebaseFirestore? firestore, ApiManager? apiManager})
-    : _firestore = firestore ?? FirebaseFirestore.instance,
-      _apiManager = apiManager ?? ApiManager(),
-      _analyticsManager = AnalyticsManager(),
-      _crashlyticsManager = CrashlyticsManager(),
-      super(RosterInitial()) {
+  RosterBloc({
+    FirebaseFirestore? firestore,
+    ApiManager? apiManager,
+    AnalyticsManager? analyticsManager,
+    CrashlyticsManager? crashlyticsManager,
+  }) : _firestore = firestore ?? FirebaseFirestore.instance,
+       _apiManager = apiManager ?? ApiManager(),
+       _analyticsManager = analyticsManager ?? AnalyticsManager(),
+       _crashlyticsManager = crashlyticsManager ?? CrashlyticsManager(),
+       super(RosterInitial()) {
     on<AddHeroToRoster>(_onAddHeroToRoster);
     on<GetHeroById>(_onGetHeroById);
     on<GetRoster>(_onGetRoster);

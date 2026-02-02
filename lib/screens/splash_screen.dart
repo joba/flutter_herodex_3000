@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -15,14 +16,14 @@ class SplashScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: const EdgeInsets.all(AppConstants.appPaddingBase * 3),
                 child: const HerodexLogo(),
               ),
               Text(
                 AppTexts.common.title.toUpperCase(),
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppConstants.appPaddingBase * 2),
               const CircularProgressIndicator(),
             ],
           ),
