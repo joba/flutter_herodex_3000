@@ -6,6 +6,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/decorations.dart';
+import 'package:flutter_herodex_3000/widgets/heroes_alignment_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -55,10 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             textAlign: TextAlign.center,
                           ),
+                          HeroesAlignmentBar(state: state),
                         ],
                       ),
                     ),
                     const SizedBox(height: AppConstants.appPaddingBase * 4),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [

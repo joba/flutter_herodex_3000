@@ -5,6 +5,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
+import 'package:flutter_herodex_3000/styles/colors.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/hero_image_widget.dart';
@@ -123,6 +124,22 @@ class HeroCard extends StatelessWidget {
                                 onPressed: onAddPressed,
                               );
                             },
+                          ),
+                        if (!showIcon)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Icon(
+                              Icons.shield,
+                              size: AppConstants.cardIconSize,
+                              color:
+                                  hero.biography?.alignment?.toLowerCase() ==
+                                      'good'
+                                  ? AppColors.secondary
+                                  : hero.biography?.alignment?.toLowerCase() ==
+                                        'bad'
+                                  ? AppColors.error
+                                  : AppColors.neutral,
+                            ),
                           ),
                       ],
                     ),

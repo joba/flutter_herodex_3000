@@ -11,4 +11,5 @@ class AppColors {
   static const Color onSurface = Color(0xFFFFFFFF);
   static const Color appBackground = Color(0xFF0a0c0a);
   static const Color textPrimary = Color(0xFFCCCCCC);
+  static const Color neutral = Color(0xFF888888);
 }

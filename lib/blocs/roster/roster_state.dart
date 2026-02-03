@@ -20,6 +20,24 @@ abstract class RosterState {
       return sum + combat;
     });
   }
+
+  int get goodCount {
+    return heroes
+        .where((hero) => hero.biography?.alignment?.toLowerCase() == 'good')
+        .length;
+  }
+
+  int get badCount {
+    return heroes
+        .where((hero) => hero.biography?.alignment?.toLowerCase() == 'bad')
+        .length;
+  }
+
+  int get neutralCount {
+    return heroes
+        .where((hero) => hero.biography?.alignment?.toLowerCase() == 'neutral')
+        .length;
+  }
 }
 
 class RosterInitial extends RosterState {

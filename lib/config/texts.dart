@@ -94,6 +94,9 @@ class _RosterTexts {
   String get deleteConfirm => 'Remove hero from roster?';
   String get heroNotFound => 'Hero not found';
   String get addHero => 'Add Hero to Roster';
+  String get alignmentGood => 'Good';
+  String get alignmentBad => 'Bad';
+  String get alignmentNeutral => 'Neutral';
   String heroAdded(String name) => '$name added to roster';
   String heroRemoved(String name) => '$name removed from roster';
 }
