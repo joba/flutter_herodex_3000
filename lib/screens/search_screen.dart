@@ -106,6 +106,16 @@ class _SearchViewState extends State<SearchView> {
                   child: BlocBuilder<SearchBloc, SearchState>(
                     builder: (context, state) {
                       if (state is SearchInitial &&
+                          state.searchHistory.isEmpty) {
+                        return Center(
+                          child: Text(
+                            AppTexts.search.emptyHistory,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        );
+                      }
+                      if (state is SearchInitial &&
                           state.searchHistory.isNotEmpty) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

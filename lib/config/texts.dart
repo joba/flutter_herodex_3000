@@ -31,7 +31,7 @@ class _OnBoardingTexts {
 
   String get welcome => 'Welcome to HeroDex 3000';
   String get getStarted =>
-      'Thank you for choosing our app. Let\'s get you started with a quick setup.';
+      'Your ultimate companion for tracking and managing Earth\'s defenders during the invasion. Build your roster, discover hero abilities, and stay updated on the resistance.';
   String get finish => 'Finish';
 
   String get analyticsTitle => 'Analytics'.toUpperCase();
@@ -82,6 +82,8 @@ class _SearchTexts {
   String get noResults => 'No heroes found';
   String searchResults(int result) => 'Found $result result(s)';
   String get searchError => 'Failed to search heroes';
+  String get emptyHistory =>
+      'Start searching to discover heroes and track their abilities';
 }
 
 class _RosterTexts {

@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const HerodexLogo(),
                   const SizedBox(height: AppConstants.appPaddingBase * 2),
                   Text(
-                    AppTexts.auth.signIn.toUpperCase(),
+                    AppTexts.common.title.toUpperCase(),
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(height: AppConstants.appPaddingBase * 2),
