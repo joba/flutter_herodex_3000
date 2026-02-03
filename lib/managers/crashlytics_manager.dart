@@ -13,6 +13,14 @@ class CrashlyticsManager {
 
   /// Initialize crashlytics based on user consent
   Future<void> initialize({required bool userConsent}) async {
+    // Crashlytics is not supported on web
+    if (kIsWeb) {
+      _isInitialized = true;
+      _crashlyticsEnabled = false;
+      AppLogger.log('Crashlytics is not supported on web platform');
+      return;
+    }
+
     _crashlyticsEnabled = userConsent;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('crashlytics_enabled', userConsent);
@@ -43,6 +51,11 @@ class CrashlyticsManager {
     StackTrace? stackTrace, {
     String? reason,
   }) async {
+    if (kIsWeb) {
+      AppLogger.log('Error (web): $error${reason != null ? ' - $reason' : ''}');
+      return;
+    }
+
     AppLogger.log(
       _crashlyticsEnabled
           ? 'Recording error to Crashlytics: $error'
@@ -67,14 +80,14 @@ class CrashlyticsManager {
 
   /// Set user identifier
   Future<void> setUserIdentifier(String userId) async {
-    if (!_crashlyticsEnabled) return;
+    if (kIsWeb || !_crashlyticsEnabled) return;
 
     await FirebaseCrashlytics.instance.setUserIdentifier(userId);
   }
 
   /// Set custom key-value pair
   Future<void> setCustomKey(String key, dynamic value) async {
-    if (!_crashlyticsEnabled) return;
+    if (kIsWeb || !_crashlyticsEnabled) return;
 
     await FirebaseCrashlytics.instance.setCustomKey(key, value);
   }
@@ -93,6 +106,7 @@ class CrashlyticsManager {
   }
 
   Future<bool> get isEnabled async {
+    if (kIsWeb) return false;
     if (!_isInitialized) await loadPreference();
     return _crashlyticsEnabled;
   }

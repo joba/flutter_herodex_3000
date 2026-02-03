@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -74,8 +75,13 @@ class MyApp extends StatelessWidget {
               builder: (context, child) {
                 return Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: AppConstants.appMaxWidth,
+                    constraints: BoxConstraints(
+                      maxWidth: kIsWeb
+                          ? AppConstants.appMaxWidthWeb
+                          : AppConstants.appMaxWidth,
+                      maxHeight: kIsWeb
+                          ? AppConstants.appMaxHeightWeb
+                          : double.infinity,
                     ),
                     child: child ?? const SizedBox(),
                   ),

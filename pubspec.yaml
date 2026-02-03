@@ -50,6 +50,7 @@ dependencies:
   path_provider:
   package_info_plus:
   device_info_plus:
+  bloc: ^9.2.0
 
 dev_dependencies:
   flutter_launcher_icons:

@@ -57,7 +57,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String osVersion = '';
     String deviceModel = '';
 
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      final webInfo = await deviceInfo.webBrowserInfo;
+      osVersion = 'Web - ${webInfo.browserName.name}';
+      deviceModel = webInfo.platform ?? 'Unknown';
+    } else if (Platform.isAndroid) {
       final androidInfo = await deviceInfo.androidInfo;
       osVersion = 'Android ${androidInfo.version.release}';
       deviceModel = androidInfo.model;
