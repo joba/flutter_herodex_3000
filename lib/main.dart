@@ -73,17 +73,20 @@ class MyApp extends StatelessWidget {
               themeMode: themeMode,
               routerConfig: appRouter,
               builder: (context, child) {
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: kIsWeb
-                          ? AppConstants.appMaxWidthWeb
-                          : AppConstants.appMaxWidth,
-                      maxHeight: kIsWeb
-                          ? AppConstants.appMaxHeightWeb
-                          : double.infinity,
+                return Container(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: kIsWeb
+                            ? AppConstants.appMaxWidthWeb
+                            : AppConstants.appMaxWidth,
+                        maxHeight: kIsWeb
+                            ? AppConstants.appMaxHeightWeb
+                            : double.infinity,
+                      ),
+                      child: child ?? const SizedBox(),
                     ),
-                    child: child ?? const SizedBox(),
                   ),
                 );
               },
