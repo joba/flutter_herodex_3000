@@ -4,6 +4,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/models/hero_alignment.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
 import 'package:flutter_herodex_3000/styles/colors.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
@@ -132,11 +133,15 @@ class HeroCard extends StatelessWidget {
                               Icons.shield,
                               size: AppConstants.cardIconSize,
                               color:
-                                  hero.biography?.alignment?.toLowerCase() ==
-                                      'good'
+                                  HeroAlignment.fromString(
+                                        hero.biography?.alignment,
+                                      ) ==
+                                      HeroAlignment.good
                                   ? AppColors.secondary
-                                  : hero.biography?.alignment?.toLowerCase() ==
-                                        'bad'
+                                  : HeroAlignment.fromString(
+                                          hero.biography?.alignment,
+                                        ) ==
+                                        HeroAlignment.bad
                                   ? AppColors.error
                                   : AppColors.neutral,
                             ),

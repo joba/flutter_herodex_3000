@@ -10,9 +10,10 @@ import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
-import 'package:flutter_herodex_3000/styles/colors.dart';
+import 'package:flutter_herodex_3000/models/hero_alignment.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
+import 'package:flutter_herodex_3000/widgets/alignment_filter_widget.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -37,7 +38,7 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
-  String? _selectedAlignment;
+  HeroAlignment? _selectedAlignment;
 
   @override
   void initState() {
@@ -104,44 +105,7 @@ class _SearchViewState extends State<SearchView> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: AppConstants.appPaddingBase / 2),
-                Wrap(
-                  spacing: AppConstants.appPaddingBase / 2,
-                  children: [
-                    FilterChip(
-                      label: Text('All'),
-                      selectedColor: AppColors.primary,
-                      selected: _selectedAlignment == null,
-                      onSelected: (_) =>
-                          setState(() => _selectedAlignment = null),
-                      showCheckmark: false,
-                    ),
-                    FilterChip(
-                      label: Text('Good'),
-                      selectedColor: AppColors.secondary,
-                      selected: _selectedAlignment == 'good',
-                      onSelected: (_) =>
-                          setState(() => _selectedAlignment = 'good'),
-                      showCheckmark: false,
-                    ),
-                    FilterChip(
-                      label: Text('Bad'),
-                      selectedColor: AppColors.error,
-                      selected: _selectedAlignment == 'bad',
-                      onSelected: (_) =>
-                          setState(() => _selectedAlignment = 'bad'),
-                      showCheckmark: false,
-                    ),
-                    FilterChip(
-                      label: Text('Neutral'),
-                      selectedColor: AppColors.neutral,
-                      selected: _selectedAlignment == 'neutral',
-                      onSelected: (_) =>
-                          setState(() => _selectedAlignment = 'neutral'),
-                      showCheckmark: false,
-                    ),
-                  ],
-                ),
+
                 const SizedBox(height: AppConstants.appPaddingBase),
                 Expanded(
                   child: BlocBuilder<SearchBloc, SearchState>(
@@ -225,13 +189,24 @@ class _SearchViewState extends State<SearchView> {
                             : state.result.results
                                   .where(
                                     (hero) =>
-                                        hero.biography?.alignment
-                                            ?.toLowerCase() ==
+                                        HeroAlignment.fromString(
+                                          hero.biography?.alignment,
+                                        ) ==
                                         _selectedAlignment,
                                   )
                                   .toList();
                         return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            AlignmentFilter(
+                              selectedAlignment: _selectedAlignment,
+                              onAlignmentChanged: (alignment) {
+                                setState(() {
+                                  _selectedAlignment = alignment;
+                                });
+                              },
+                            ),
+                            const SizedBox(height: AppConstants.appPaddingBase),
                             Text(
                               AppTexts.search.searchResults(
                                 filteredHeroes.length,

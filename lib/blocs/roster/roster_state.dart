@@ -1,3 +1,4 @@
+import 'package:flutter_herodex_3000/models/hero_alignment.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart';
 
 abstract class RosterState {
@@ -23,19 +24,31 @@ abstract class RosterState {
 
   int get goodCount {
     return heroes
-        .where((hero) => hero.biography?.alignment?.toLowerCase() == 'good')
+        .where(
+          (hero) =>
+              HeroAlignment.fromString(hero.biography?.alignment) ==
+              HeroAlignment.good,
+        )
         .length;
   }
 
   int get badCount {
     return heroes
-        .where((hero) => hero.biography?.alignment?.toLowerCase() == 'bad')
+        .where(
+          (hero) =>
+              HeroAlignment.fromString(hero.biography?.alignment) ==
+              HeroAlignment.bad,
+        )
         .length;
   }
 
   int get neutralCount {
     return heroes
-        .where((hero) => hero.biography?.alignment?.toLowerCase() == 'neutral')
+        .where(
+          (hero) =>
+              HeroAlignment.fromString(hero.biography?.alignment) ==
+              HeroAlignment.neutral,
+        )
         .length;
   }
 }

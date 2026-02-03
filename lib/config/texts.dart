@@ -97,6 +97,7 @@ class _RosterTexts {
   String get alignmentGood => 'Good';
   String get alignmentBad => 'Bad';
   String get alignmentNeutral => 'Neutral';
+  String get alignmentAll => 'All';
   String heroAdded(String name) => '$name added to roster';
   String heroRemoved(String name) => '$name removed from roster';
 }
