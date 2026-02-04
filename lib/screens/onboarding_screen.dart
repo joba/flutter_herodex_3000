@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
+import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/analytics_page.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/crashlytics_page.dart';
@@ -44,20 +45,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Future<void> _completeOnboarding() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_completed', true);
-    await widget.analyticsManager.setAnalyticsEnabled(_analyticsEnabled);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('onboarding_completed', true);
+      await widget.analyticsManager.setAnalyticsEnabled(_analyticsEnabled);
 
-    // Crashlytics is not supported on web
-    if (!kIsWeb) {
-      await widget.crashlyticsManager.updateConsent(_crashlyticsEnabled);
-    }
+      // Crashlytics is not supported on web
+      if (!kIsWeb) {
+        await widget.crashlyticsManager.updateConsent(_crashlyticsEnabled);
+      }
 
-    // Set location preference
-    await widget.locationManager.setLocationEnabled(_locationEnabled);
+      // Set location preference
+      await widget.locationManager.setLocationEnabled(_locationEnabled);
 
-    if (mounted) {
-      context.go('/auth');
+      if (mounted) {
+        context.go('/auth');
+      }
+    } catch (e, stackTrace) {
+      widget.crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to complete onboarding',
+      );
+      if (mounted) {
+        AppSnackBar.of(context).showError('Failed to complete onboarding: $e');
+      }
     }
   }
 

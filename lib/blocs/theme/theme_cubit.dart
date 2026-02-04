@@ -1,24 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
+import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeCubit extends Cubit<ThemeMode> {
+  final CrashlyticsManager _crashlyticsManager;
+
   static const String _themeModeKey = 'theme_mode';
 
-  ThemeCubit() : super(ThemeMode.dark) {
+  ThemeCubit({CrashlyticsManager? crashlyticsManager})
+    : _crashlyticsManager = crashlyticsManager ?? CrashlyticsManager(),
+      super(ThemeMode.dark) {
     _loadThemeMode();
   }
 
   Future<void> _loadThemeMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeModeString = prefs.getString(_themeModeKey) ?? 'dark';
-    emit(_getThemeModeFromString(themeModeString));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final themeModeString = prefs.getString(_themeModeKey) ?? 'dark';
+      emit(_getThemeModeFromString(themeModeString));
+    } catch (e, stackTrace) {
+      // If loading fails, just keep the default dark mode
+      AppLogger.log('Failed to load theme mode: $e');
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to load theme mode',
+      );
+      emit(ThemeMode.dark);
+    }
   }
 
   Future<void> setThemeMode(ThemeMode mode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_themeModeKey, _getStringFromThemeMode(mode));
-    emit(mode);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_themeModeKey, _getStringFromThemeMode(mode));
+      emit(mode);
+    } catch (e, stackTrace) {
+      AppLogger.log('Failed to save theme mode: $e');
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to save theme mode',
+      );
+      // Still emit the mode so UI updates even if save fails
+      emit(mode);
+    }
   }
 
   ThemeMode _getThemeModeFromString(String mode) {

@@ -21,12 +21,22 @@ import 'package:flutter_herodex_3000/firebase_options.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/screens/login_screen.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
+import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: ".env");
+
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    // Log error but continue - app can still function with limited features
+    AppLogger.log('Initialization error: $e');
+  }
+
   runApp(const MyApp());
 }
 

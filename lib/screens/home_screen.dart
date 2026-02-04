@@ -7,6 +7,7 @@ import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/decorations.dart';
+import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/heroes_alignment_bar.dart';
 import 'package:flutter_herodex_3000/widgets/map/battle_map_widget.dart';
 
@@ -28,142 +29,151 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocBuilder<RosterBloc, RosterState>(
-      builder: (context, state) {
-        return Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(AppConstants.appPaddingBase),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    MergeSemantics(
-                      child: Container(
-                        padding: const EdgeInsets.all(
-                          AppConstants.appPaddingBase * 2,
-                        ),
-                        decoration: homeCardDecoration(context),
-                        child: Column(
-                          children: [
-                            Text(
-                              AppTexts.home.totalHeroes.toUpperCase(),
-                              style: theme.textTheme.titleLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: AppConstants.appPaddingBase),
-                            Text(
-                              '${state.heroCount}',
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontSize: 82,
-                                fontWeight: FontWeight.bold,
+    return BlocListener<RosterBloc, RosterState>(
+      listener: (context, state) {
+        if (state is RosterError) {
+          AppSnackBar.of(context).showError(state.message);
+        }
+      },
+      child: BlocBuilder<RosterBloc, RosterState>(
+        builder: (context, state) {
+          return Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(AppConstants.appPaddingBase),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      MergeSemantics(
+                        child: Container(
+                          padding: const EdgeInsets.all(
+                            AppConstants.appPaddingBase * 2,
+                          ),
+                          decoration: homeCardDecoration(context),
+                          child: Column(
+                            children: [
+                              Text(
+                                AppTexts.home.totalHeroes.toUpperCase(),
+                                style: theme.textTheme.titleLarge,
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            HeroesAlignmentBar(state: state),
-                          ],
+                              const SizedBox(
+                                height: AppConstants.appPaddingBase,
+                              ),
+                              Text(
+                                '${state.heroCount}',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontSize: 82,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              HeroesAlignmentBar(state: state),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: AppConstants.appPaddingBase * 4),
+                      const SizedBox(height: AppConstants.appPaddingBase * 4),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        MergeSemantics(
-                          child: Container(
-                            padding: const EdgeInsets.all(
-                              AppConstants.appPaddingBase,
-                            ),
-                            decoration: homeCardDecoration(
-                              context,
-                              color: theme.colorScheme.secondary,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  AppTexts.home.power.toUpperCase(),
-                                  style: theme.textTheme.titleLarge,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(
-                                  height: AppConstants.appPaddingBase,
-                                ),
-                                Text(
-                                  '${state.totalPower}',
-                                  style: theme.textTheme.titleLarge?.copyWith(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          MergeSemantics(
+                            child: Container(
+                              padding: const EdgeInsets.all(
+                                AppConstants.appPaddingBase,
+                              ),
+                              decoration: homeCardDecoration(
+                                context,
+                                color: theme.colorScheme.secondary,
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    AppTexts.home.power.toUpperCase(),
+                                    style: theme.textTheme.titleLarge,
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                                  const SizedBox(
+                                    height: AppConstants.appPaddingBase,
+                                  ),
+                                  Text(
+                                    '${state.totalPower}',
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        MergeSemantics(
-                          child: Container(
-                            padding: const EdgeInsets.all(
-                              AppConstants.appPaddingBase,
-                            ),
-                            decoration: homeCardDecoration(
-                              context,
-                              color: theme.colorScheme.secondary,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  AppTexts.home.combat.toUpperCase(),
-                                  style: theme.textTheme.titleLarge,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(
-                                  height: AppConstants.appPaddingBase,
-                                ),
-                                Text(
-                                  '${state.totalCombat}',
-                                  style: theme.textTheme.titleLarge?.copyWith(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
+                          MergeSemantics(
+                            child: Container(
+                              padding: const EdgeInsets.all(
+                                AppConstants.appPaddingBase,
+                              ),
+                              decoration: homeCardDecoration(
+                                context,
+                                color: theme.colorScheme.secondary,
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    AppTexts.home.combat.toUpperCase(),
+                                    style: theme.textTheme.titleLarge,
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                                  const SizedBox(
+                                    height: AppConstants.appPaddingBase,
+                                  ),
+                                  Text(
+                                    '${state.totalCombat}',
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 32),
-                    BattleMapWidget(
-                      locationManager: context.read<LocationManager>(),
-                    ),
-                    const SizedBox(height: 32),
-                    Text(
-                      AppTexts.news.latestNews.toUpperCase(),
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: AppConstants.appPaddingBase),
-                    Column(
-                      children: [
-                        _NewsItem(text: AppTexts.news.feed10),
-                        _NewsItem(text: AppTexts.news.feed9),
-                        _NewsItem(text: AppTexts.news.feed8),
-                        _NewsItem(text: AppTexts.news.feed7),
-                        _NewsItem(text: AppTexts.news.feed6),
-                        _NewsItem(text: AppTexts.news.feed5),
-                        _NewsItem(text: AppTexts.news.feed4),
-                        _NewsItem(text: AppTexts.news.feed3),
-                        _NewsItem(text: AppTexts.news.feed2),
-                        _NewsItem(text: AppTexts.news.feed1),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      BattleMapWidget(
+                        locationManager: context.read<LocationManager>(),
+                      ),
+                      const SizedBox(height: 32),
+                      Text(
+                        AppTexts.news.latestNews.toUpperCase(),
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: AppConstants.appPaddingBase),
+                      Column(
+                        children: [
+                          _NewsItem(text: AppTexts.news.feed10),
+                          _NewsItem(text: AppTexts.news.feed9),
+                          _NewsItem(text: AppTexts.news.feed8),
+                          _NewsItem(text: AppTexts.news.feed7),
+                          _NewsItem(text: AppTexts.news.feed6),
+                          _NewsItem(text: AppTexts.news.feed5),
+                          _NewsItem(text: AppTexts.news.feed4),
+                          _NewsItem(text: AppTexts.news.feed3),
+                          _NewsItem(text: AppTexts.news.feed2),
+                          _NewsItem(text: AppTexts.news.feed1),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

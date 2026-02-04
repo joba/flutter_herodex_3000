@@ -9,6 +9,7 @@ import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
+import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 import 'package:go_router/go_router.dart';
@@ -44,47 +45,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _loadPreferences() async {
-    final analyticsEnabled = await _analyticsManager.isEnabled;
-    final crashLyticsEnabled = await _crashlyticsManager.isEnabled;
-    final locationEnabled = await _locationManager.isEnabled;
-    setState(() {
-      _analyticsEnabled = analyticsEnabled;
-      _crashReportingEnabled = crashLyticsEnabled;
-      _locationEnabled = locationEnabled;
-    });
+    try {
+      final analyticsEnabled = await _analyticsManager.isEnabled;
+      final crashLyticsEnabled = await _crashlyticsManager.isEnabled;
+      final locationEnabled = await _locationManager.isEnabled;
+      setState(() {
+        _analyticsEnabled = analyticsEnabled;
+        _crashReportingEnabled = crashLyticsEnabled;
+        _locationEnabled = locationEnabled;
+      });
+    } catch (e, stackTrace) {
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to load preferences',
+      );
+      if (mounted) {
+        AppSnackBar.of(context).showError('Failed to load preferences: $e');
+      }
+    }
   }
 
   Future<void> _loadSystemInfo() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    final deviceInfo = DeviceInfoPlugin();
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      final deviceInfo = DeviceInfoPlugin();
 
-    String osVersion = '';
-    String deviceModel = '';
+      String osVersion = '';
+      String deviceModel = '';
 
-    if (kIsWeb) {
-      final webInfo = await deviceInfo.webBrowserInfo;
-      osVersion = 'Web - ${webInfo.browserName.name}';
-      deviceModel = webInfo.platform ?? 'Unknown';
-    } else if (Platform.isAndroid) {
-      final androidInfo = await deviceInfo.androidInfo;
-      osVersion = 'Android ${androidInfo.version.release}';
-      deviceModel = androidInfo.model;
-    } else if (Platform.isIOS) {
-      final iosInfo = await deviceInfo.iosInfo;
-      osVersion = 'iOS ${iosInfo.systemVersion}';
-      deviceModel = iosInfo.model;
-    } else if (Platform.isMacOS) {
-      final macInfo = await deviceInfo.macOsInfo;
-      osVersion = 'macOS ${macInfo.osRelease}';
-      deviceModel = macInfo.model;
+      if (kIsWeb) {
+        final webInfo = await deviceInfo.webBrowserInfo;
+        osVersion = 'Web - ${webInfo.browserName.name}';
+        deviceModel = webInfo.platform ?? 'Unknown';
+      } else if (Platform.isAndroid) {
+        final androidInfo = await deviceInfo.androidInfo;
+        osVersion = 'Android ${androidInfo.version.release}';
+        deviceModel = androidInfo.model;
+      } else if (Platform.isIOS) {
+        final iosInfo = await deviceInfo.iosInfo;
+        osVersion = 'iOS ${iosInfo.systemVersion}';
+        deviceModel = iosInfo.model;
+      } else if (Platform.isMacOS) {
+        final macInfo = await deviceInfo.macOsInfo;
+        osVersion = 'macOS ${macInfo.osRelease}';
+        deviceModel = macInfo.model;
+      }
+
+      setState(() {
+        _version = packageInfo.version;
+        _buildNumber = packageInfo.buildNumber;
+        _osVersion = osVersion;
+        _deviceModel = deviceModel;
+      });
+    } catch (e, stackTrace) {
+      _crashlyticsManager.recordError(
+        e,
+        stackTrace,
+        reason: 'Failed to load system info',
+      );
+      if (mounted) {
+        AppSnackBar.of(context).showError('Failed to load system info: $e');
+      }
     }
-
-    setState(() {
-      _version = packageInfo.version;
-      _buildNumber = packageInfo.buildNumber;
-      _osVersion = osVersion;
-      _deviceModel = deviceModel;
-    });
   }
 
   @override
