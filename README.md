@@ -26,7 +26,7 @@ A Flutter application for browsing and managing superhero information using the 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/joba/flutter_herodex_3000.git
 cd flutter_herodex_3000
 ```
 
