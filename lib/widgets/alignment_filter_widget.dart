@@ -16,38 +16,41 @@ class AlignmentFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: AppConstants.appPaddingBase / 2,
-      children: [
-        FilterChip(
-          label: Text(AppTexts.roster.alignmentAll),
-          selectedColor: AppColors.primary,
-          selected: selectedAlignment == null,
-          onSelected: (_) => onAlignmentChanged(null),
-          showCheckmark: false,
-        ),
-        FilterChip(
-          label: Text(AppTexts.roster.alignmentGood),
-          selectedColor: AppColors.secondary,
-          selected: selectedAlignment == HeroAlignment.good,
-          onSelected: (_) => onAlignmentChanged(HeroAlignment.good),
-          showCheckmark: false,
-        ),
-        FilterChip(
-          label: Text(AppTexts.roster.alignmentBad),
-          selectedColor: AppColors.error,
-          selected: selectedAlignment == HeroAlignment.bad,
-          onSelected: (_) => onAlignmentChanged(HeroAlignment.bad),
-          showCheckmark: false,
-        ),
-        FilterChip(
-          label: Text(AppTexts.roster.alignmentNeutral),
-          selectedColor: AppColors.neutral,
-          selected: selectedAlignment == HeroAlignment.neutral,
-          onSelected: (_) => onAlignmentChanged(HeroAlignment.neutral),
-          showCheckmark: false,
-        ),
-      ],
+    return Semantics(
+      label: 'Filter heroes by alignment',
+      child: Wrap(
+        spacing: AppConstants.appPaddingBase / 2,
+        children: [
+          FilterChip(
+            label: Text(AppTexts.roster.alignmentAll),
+            selectedColor: AppColors.primary,
+            selected: selectedAlignment == null,
+            onSelected: (_) => onAlignmentChanged(null),
+            showCheckmark: false,
+          ),
+          FilterChip(
+            label: Text(AppTexts.roster.alignmentGood),
+            selectedColor: AppColors.secondary,
+            selected: selectedAlignment == HeroAlignment.good,
+            onSelected: (_) => onAlignmentChanged(HeroAlignment.good),
+            showCheckmark: false,
+          ),
+          FilterChip(
+            label: Text(AppTexts.roster.alignmentBad),
+            selectedColor: AppColors.error,
+            selected: selectedAlignment == HeroAlignment.bad,
+            onSelected: (_) => onAlignmentChanged(HeroAlignment.bad),
+            showCheckmark: false,
+          ),
+          FilterChip(
+            label: Text(AppTexts.roster.alignmentNeutral),
+            selectedColor: AppColors.neutral,
+            selected: selectedAlignment == HeroAlignment.neutral,
+            onSelected: (_) => onAlignmentChanged(HeroAlignment.neutral),
+            showCheckmark: false,
+          ),
+        ],
+      ),
     );
   }
 }

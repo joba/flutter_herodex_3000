@@ -41,23 +41,47 @@ class RootNavigation extends StatelessWidget {
               },
               destinations: [
                 NavigationDestination(
-                  icon: const Icon(Icons.home_outlined),
-                  selectedIcon: const Icon(Icons.home),
+                  icon: Semantics(
+                    label: 'Home',
+                    child: const Icon(Icons.home_outlined),
+                  ),
+                  selectedIcon: Semantics(
+                    label: 'Home, selected',
+                    child: const Icon(Icons.home),
+                  ),
                   label: 'Home',
                 ),
                 NavigationDestination(
-                  icon: const Icon(Icons.search_outlined),
-                  selectedIcon: const Icon(Icons.search),
+                  icon: Semantics(
+                    label: 'Search',
+                    child: const Icon(Icons.search_outlined),
+                  ),
+                  selectedIcon: Semantics(
+                    label: 'Search, selected',
+                    child: const Icon(Icons.search),
+                  ),
                   label: 'Search',
                 ),
                 NavigationDestination(
-                  icon: const Icon(Icons.group_outlined),
-                  selectedIcon: const Icon(Icons.group),
+                  icon: Semantics(
+                    label: 'Roster',
+                    child: const Icon(Icons.group_outlined),
+                  ),
+                  selectedIcon: Semantics(
+                    label: 'Roster, selected',
+                    child: const Icon(Icons.group),
+                  ),
                   label: 'Roster',
                 ),
                 NavigationDestination(
-                  icon: const Icon(Icons.settings_outlined),
-                  selectedIcon: const Icon(Icons.settings),
+                  icon: Semantics(
+                    label: 'Settings',
+                    child: const Icon(Icons.settings_outlined),
+                  ),
+                  selectedIcon: Semantics(
+                    label: 'Settings, selected',
+                    child: const Icon(Icons.settings),
+                  ),
                   label: 'Settings',
                 ),
               ],

@@ -37,29 +37,31 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(
-                        AppConstants.appPaddingBase * 2,
-                      ),
-                      decoration: homeCardDecoration(context),
-                      child: Column(
-                        children: [
-                          Text(
-                            AppTexts.home.totalHeroes.toUpperCase(),
-                            style: theme.textTheme.titleLarge,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: AppConstants.appPaddingBase),
-                          Text(
-                            '${state.heroCount}',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontSize: 82,
-                              fontWeight: FontWeight.bold,
+                    MergeSemantics(
+                      child: Container(
+                        padding: const EdgeInsets.all(
+                          AppConstants.appPaddingBase * 2,
+                        ),
+                        decoration: homeCardDecoration(context),
+                        child: Column(
+                          children: [
+                            Text(
+                              AppTexts.home.totalHeroes.toUpperCase(),
+                              style: theme.textTheme.titleLarge,
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          HeroesAlignmentBar(state: state),
-                        ],
+                            const SizedBox(height: AppConstants.appPaddingBase),
+                            Text(
+                              '${state.heroCount}',
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontSize: 82,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            HeroesAlignmentBar(state: state),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: AppConstants.appPaddingBase * 4),
@@ -67,62 +69,66 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(
-                            AppConstants.appPaddingBase,
-                          ),
-                          decoration: homeCardDecoration(
-                            context,
-                            color: theme.colorScheme.secondary,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                AppTexts.home.power.toUpperCase(),
-                                style: theme.textTheme.titleLarge,
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(
-                                height: AppConstants.appPaddingBase,
-                              ),
-                              Text(
-                                '${state.totalPower}',
-                                style: theme.textTheme.titleLarge?.copyWith(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
+                        MergeSemantics(
+                          child: Container(
+                            padding: const EdgeInsets.all(
+                              AppConstants.appPaddingBase,
+                            ),
+                            decoration: homeCardDecoration(
+                              context,
+                              color: theme.colorScheme.secondary,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  AppTexts.home.power.toUpperCase(),
+                                  style: theme.textTheme.titleLarge,
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: AppConstants.appPaddingBase,
+                                ),
+                                Text(
+                                  '${state.totalPower}',
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(
-                            AppConstants.appPaddingBase,
-                          ),
-                          decoration: homeCardDecoration(
-                            context,
-                            color: theme.colorScheme.secondary,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                AppTexts.home.combat.toUpperCase(),
-                                style: theme.textTheme.titleLarge,
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(
-                                height: AppConstants.appPaddingBase,
-                              ),
-                              Text(
-                                '${state.totalCombat}',
-                                style: theme.textTheme.titleLarge?.copyWith(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
+                        MergeSemantics(
+                          child: Container(
+                            padding: const EdgeInsets.all(
+                              AppConstants.appPaddingBase,
+                            ),
+                            decoration: homeCardDecoration(
+                              context,
+                              color: theme.colorScheme.secondary,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  AppTexts.home.combat.toUpperCase(),
+                                  style: theme.textTheme.titleLarge,
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: AppConstants.appPaddingBase,
+                                ),
+                                Text(
+                                  '${state.totalCombat}',
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -169,29 +175,34 @@ class _NewsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppConstants.appPaddingBase),
-      padding: const EdgeInsets.all(AppConstants.appPaddingBase),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withAlpha(30),
-          width: 1,
+    return Semantics(
+      label: 'News alert',
+      child: Container(
+        margin: const EdgeInsets.only(bottom: AppConstants.appPaddingBase),
+        padding: const EdgeInsets.all(AppConstants.appPaddingBase),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primary.withAlpha(30),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         ),
-        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.warning_amber,
-            color: Theme.of(context).colorScheme.error,
-            size: AppConstants.appPaddingBase,
-          ),
-          const SizedBox(width: AppConstants.appPaddingBase),
-          Expanded(
-            child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
-          ),
-        ],
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ExcludeSemantics(
+              child: Icon(
+                Icons.warning_amber,
+                color: Theme.of(context).colorScheme.error,
+                size: AppConstants.appPaddingBase,
+              ),
+            ),
+            const SizedBox(width: AppConstants.appPaddingBase),
+            Expanded(
+              child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
+            ),
+          ],
+        ),
       ),
     );
   }
