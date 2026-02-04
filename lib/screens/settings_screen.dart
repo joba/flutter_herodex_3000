@@ -7,6 +7,7 @@ import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
+import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
@@ -29,9 +30,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   final _analyticsManager = AnalyticsManager();
   final _crashlyticsManager = CrashlyticsManager();
+  final _locationManager = LocationManager();
 
   bool _analyticsEnabled = false;
   bool _crashReportingEnabled = false;
+  bool _locationEnabled = false;
 
   @override
   void initState() {
@@ -43,10 +46,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _loadPreferences() async {
     final analyticsEnabled = await _analyticsManager.isEnabled;
     final crashLyticsEnabled = await _crashlyticsManager.isEnabled;
-
+    final locationEnabled = await _locationManager.isEnabled;
     setState(() {
       _analyticsEnabled = analyticsEnabled;
       _crashReportingEnabled = crashLyticsEnabled;
+      _locationEnabled = locationEnabled;
     });
   }
 
@@ -182,6 +186,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   });
                                 },
                               ),
+                            const Divider(height: 1),
+                            SwitchListTile(
+                              title: const Text('Location Services'),
+                              subtitle: const Text(
+                                'Enable location-based features in the app',
+                              ),
+                              value: _locationEnabled,
+                              onChanged: (value) async {
+                                await _locationManager.setLocationEnabled(
+                                  value,
+                                );
+                                setState(() {
+                                  _locationEnabled = value;
+                                });
+                              },
+                            ),
                             const Divider(height: 1),
                             BlocBuilder<ThemeCubit, ThemeMode>(
                               builder: (context, themeMode) {

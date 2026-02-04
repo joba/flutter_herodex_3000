@@ -1,11 +1,14 @@
+import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationManager {
+  static final LocationManager _instance = LocationManager._internal();
+  factory LocationManager() => _instance;
+  LocationManager._internal();
+
   bool _locationEnabled = false;
   bool _isInitialized = false;
-
-  LocationManager();
 
   /// Initialize and load saved preference
   Future<void> initialize() async {
@@ -23,6 +26,7 @@ class LocationManager {
 
   /// Enable or disable location
   Future<void> setLocationEnabled(bool enabled) async {
+    AppLogger.log('Setting location enabled: $enabled');
     _locationEnabled = enabled;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('location_enabled', enabled);
@@ -71,6 +75,9 @@ class LocationManager {
 
   /// Get current position if permission is granted
   Future<Position?> getCurrentPosition() async {
+    AppLogger.log(
+      'Getting current position with location enabled: $_locationEnabled',
+    );
     if (!_locationEnabled) return null;
 
     bool hasPermission = await checkAndRequestPermission();

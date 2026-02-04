@@ -14,4 +14,11 @@ class AppConstants {
 
   // Data
   static const int maxSearchHistory = 15;
+
+  // Map
+  static const double defaultMapZoom = 8.0;
+  static const double defaultMapMinZoom = 3.0;
+  static const double defaultMapMaxZoom = 18.0;
+  static const double mapMarkerSize = 40.0;
+  static const double mapHeight = 300.0;
 }

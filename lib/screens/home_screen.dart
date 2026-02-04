@@ -8,7 +8,7 @@ import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/decorations.dart';
 import 'package:flutter_herodex_3000/widgets/heroes_alignment_bar.dart';
-import 'package:flutter_herodex_3000/widgets/battle_map_widget.dart';
+import 'package:flutter_herodex_3000/widgets/map/battle_map_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -128,8 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 32),
-                    Text('BATTLE ZONES', style: theme.textTheme.titleMedium),
-                    const SizedBox(height: 16),
                     BattleMapWidget(
                       locationManager: context.read<LocationManager>(),
                     ),
