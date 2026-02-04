@@ -67,7 +67,7 @@ class HeroesAlignmentBar extends StatelessWidget {
                 const SizedBox(width: AppConstants.appPaddingBase / 2),
                 Text(
                   '${AppTexts.roster.alignmentGood} (${state.goodCount})',
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.titleLarge?.copyWith(fontSize: 12),
                 ),
               ],
             ),
@@ -86,7 +86,7 @@ class HeroesAlignmentBar extends StatelessWidget {
                 const SizedBox(width: AppConstants.appPaddingBase / 2),
                 Text(
                   '${AppTexts.roster.alignmentNeutral} (${state.neutralCount})',
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.titleLarge?.copyWith(fontSize: 12),
                 ),
               ],
             ),
@@ -105,7 +105,7 @@ class HeroesAlignmentBar extends StatelessWidget {
                 const SizedBox(width: AppConstants.appPaddingBase / 2),
                 Text(
                   '${AppTexts.roster.alignmentBad} (${state.badCount})',
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.titleLarge?.copyWith(fontSize: 12),
                 ),
               ],
             ),

@@ -23,13 +23,11 @@ class MapZoomControls extends StatelessWidget {
           FloatingActionButton.small(
             heroTag: 'center',
             onPressed: () {
-              mapController.move(
-                initialCenter,
-                AppConstants.defaultMapMaxZoom,
-              );
+              mapController.move(initialCenter, AppConstants.defaultMapMaxZoom);
             },
             child: const Icon(Icons.center_focus_strong),
           ),
+          const SizedBox(height: AppConstants.appPaddingBase / 4),
           FloatingActionButton.small(
             heroTag: 'zoom_in',
             onPressed: () {
