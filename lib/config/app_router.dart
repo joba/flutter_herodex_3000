@@ -6,6 +6,7 @@ import 'package:flutter_herodex_3000/main.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
+import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/screens/home_screen.dart';
 import 'package:flutter_herodex_3000/screens/onboarding_screen.dart';
 import 'package:flutter_herodex_3000/screens/roster_screen.dart';
@@ -68,9 +69,11 @@ final appRouter = GoRouter(
       builder: (context, state) {
         final analyticsManager = context.read<AnalyticsManager>();
         final crashlyticsManager = context.read<CrashlyticsManager>();
+        final locationManager = context.read<LocationManager>();
         return OnboardingScreen(
           analyticsManager: analyticsManager,
           crashlyticsManager: crashlyticsManager,
+          locationManager: locationManager,
         );
       },
     ),

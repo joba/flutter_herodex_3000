@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
+import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';
 import 'package:flutter_herodex_3000/widgets/onboarding/analytics_page.dart';
@@ -14,11 +15,13 @@ import 'package:go_router/go_router.dart';
 class OnboardingScreen extends StatefulWidget {
   final AnalyticsManager analyticsManager;
   final CrashlyticsManager crashlyticsManager;
+  final LocationManager locationManager;
 
   const OnboardingScreen({
     super.key,
     required this.analyticsManager,
     required this.crashlyticsManager,
+    required this.locationManager,
   });
 
   @override
@@ -50,7 +53,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       await widget.crashlyticsManager.updateConsent(_crashlyticsEnabled);
     }
 
-    // Handle location permission or settings here if needed
+    // Set location preference
+    await widget.locationManager.setLocationEnabled(_locationEnabled);
+
     if (mounted) {
       context.go('/auth');
     }

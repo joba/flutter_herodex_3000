@@ -10,6 +10,7 @@ import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
 import 'package:flutter_herodex_3000/config/app_router.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
+import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/screens/home_screen.dart';
 import 'package:flutter_herodex_3000/screens/splash_screen.dart';
 import 'package:flutter_herodex_3000/styles/themes.dart';
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<CrashlyticsManager>(
           create: (context) => CrashlyticsManager(),
+        ),
+        RepositoryProvider<LocationManager>(
+          create: (context) => LocationManager(),
         ),
         RepositoryProvider<ApiManager>(create: (context) => ApiManager()),
       ],

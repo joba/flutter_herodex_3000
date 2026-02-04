@@ -57,6 +57,7 @@ class _HomeTexts {
   String get welcomeMessage => 'Welcome to HeroDex 3000';
   String get power => 'Power';
   String get combat => 'Combat';
+  String get mapTitle => 'Battle Zones'.toUpperCase();
 }
 
 class _AuthTexts {
@@ -122,6 +123,7 @@ class _CommonTexts {
   String get error => 'An error occurred';
   String get retry => 'Retry';
   String get next => 'Next';
+  String get close => 'Close';
 }
 
 class _NewsTexts {

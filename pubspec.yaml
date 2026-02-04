@@ -51,6 +51,9 @@ dependencies:
   package_info_plus:
   device_info_plus:
   bloc: ^9.2.0
+  flutter_map: 
+  latlong2:
+  geolocator:
 
 dev_dependencies:
   flutter_launcher_icons:
