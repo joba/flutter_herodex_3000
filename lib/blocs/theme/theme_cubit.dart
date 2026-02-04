@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeCubit extends Cubit<ThemeMode> {
   final CrashlyticsManager _crashlyticsManager;
+  final AnalyticsManager _analyticsManager;
 
   static const String _themeModeKey = 'theme_mode';
 
-  ThemeCubit({CrashlyticsManager? crashlyticsManager})
-    : _crashlyticsManager = crashlyticsManager ?? CrashlyticsManager(),
-      super(ThemeMode.dark) {
+  ThemeCubit({
+    CrashlyticsManager? crashlyticsManager,
+    AnalyticsManager? analyticsManager,
+  }) : _crashlyticsManager = crashlyticsManager ?? CrashlyticsManager(),
+       _analyticsManager = analyticsManager ?? AnalyticsManager(),
+       super(ThemeMode.dark) {
     _loadThemeMode();
   }
 
@@ -20,6 +25,10 @@ class ThemeCubit extends Cubit<ThemeMode> {
       final prefs = await SharedPreferences.getInstance();
       final themeModeString = prefs.getString(_themeModeKey) ?? 'dark';
       emit(_getThemeModeFromString(themeModeString));
+      _analyticsManager.logEvent(
+        name: 'theme_mode_loaded',
+        parameters: {'mode': themeModeString},
+      );
     } catch (e, stackTrace) {
       // If loading fails, just keep the default dark mode
       AppLogger.log('Failed to load theme mode: $e');

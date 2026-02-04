@@ -9,6 +9,7 @@ import 'package:flutter_herodex_3000/blocs/search/search_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
 import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_alignment.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
@@ -22,7 +23,10 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SearchBloc(context.read<ApiManager>()),
+      create: (context) => SearchBloc(
+        apiManager: context.read<ApiManager>(),
+        analyticsManager: context.read<AnalyticsManager>(),
+      ),
       child: const SearchView(),
     );
   }

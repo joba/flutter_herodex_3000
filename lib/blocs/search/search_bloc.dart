@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,10 +8,16 @@ import 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final ApiManager _apiManager;
+  final AnalyticsManager _analyticsManager;
   static const String _historyKey = 'search_history';
   static const int _maxHistoryItems = AppConstants.maxSearchHistory;
 
-  SearchBloc(this._apiManager) : super(SearchInitial()) {
+  SearchBloc({
+    required ApiManager apiManager,
+    required AnalyticsManager analyticsManager,
+  }) : _apiManager = apiManager,
+       _analyticsManager = analyticsManager,
+       super(SearchInitial()) {
     on<LoadSearchHistory>(_onLoadSearchHistory);
     on<SearchHeroRequested>(_onSearchRequested);
     on<AddToSearchHistory>(_onAddToSearchHistory);
@@ -33,11 +40,23 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   ) async {
     emit(SearchLoading(searchHistory: state.searchHistory));
     try {
+      _analyticsManager.logEvent(
+        name: 'search_hero',
+        parameters: {'search_term': event.searchTerm},
+      );
       final result = await _apiManager.searchHeroes(event.searchTerm);
       // Add to history after successful search
       add(AddToSearchHistory(event.searchTerm));
+      _analyticsManager.logEvent(
+        name: 'search_hero_success',
+        parameters: {'search_term': event.searchTerm},
+      );
       emit(SearchSuccess(result, searchHistory: state.searchHistory));
     } catch (e) {
+      _analyticsManager.logEvent(
+        name: 'search_hero_error',
+        parameters: {'search_term': event.searchTerm, 'error': e.toString()},
+      );
       emit(SearchError('Error: $e', searchHistory: state.searchHistory));
     }
   }
@@ -105,6 +124,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   ) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_historyKey);
+    _analyticsManager.logEvent(name: 'clear_search_history');
 
     // Update state with empty history
     if (state is SearchSuccess) {

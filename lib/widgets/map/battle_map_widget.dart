@@ -37,11 +37,6 @@ class _BattleMapWidgetState extends State<BattleMapWidget> {
         _userPosition = position;
         _locationPermissionGranted = true;
       });
-    } else {
-      setState(() {
-        _userPosition = null;
-        _locationPermissionGranted = false;
-      });
     }
     _mapController.move(
       LatLng(position?.latitude ?? 40.7128, position?.longitude ?? -74.0060),
