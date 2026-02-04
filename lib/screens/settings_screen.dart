@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
-import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/location_manager.dart';

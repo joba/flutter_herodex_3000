@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
 
 class LocationPage extends StatelessWidget {

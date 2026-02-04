@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/models/map_location.dart';
 
 class BattleInfoDialog extends StatelessWidget {

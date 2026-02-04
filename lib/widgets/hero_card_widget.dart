@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_event.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
-import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/models/hero_alignment.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
 import 'package:flutter_herodex_3000/styles/colors.dart';

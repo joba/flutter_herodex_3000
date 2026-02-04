@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
-import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/herodex_logo.dart';

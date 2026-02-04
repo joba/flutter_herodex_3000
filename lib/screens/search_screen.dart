@@ -8,7 +8,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_event.dart';
 import 'package:flutter_herodex_3000/blocs/search/search_state.dart';
-import 'package:flutter_herodex_3000/config/texts.dart';
+import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_alignment.dart';
