@@ -13,6 +13,7 @@ import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/models/hero_alignment.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
+import 'package:flutter_herodex_3000/utils/responsive.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/alignment_filter_widget.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
@@ -114,6 +115,9 @@ class _SearchViewState extends State<SearchView> {
                 Expanded(
                   child: BlocBuilder<SearchBloc, SearchState>(
                     builder: (context, state) {
+                      final breakpoints = context.breakpoints;
+                      final useGridView = !breakpoints.sm;
+
                       if (state is SearchInitial &&
                           state.searchHistory.isEmpty) {
                         return Center(
@@ -218,20 +222,44 @@ class _SearchViewState extends State<SearchView> {
                             ),
                             const SizedBox(height: AppConstants.appPaddingBase),
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: filteredHeroes.length,
-                                itemBuilder: (context, index) {
-                                  final hero = filteredHeroes[index];
-                                  return HeroCard(
-                                    hero: hero,
-                                    onAddPressed: () {
-                                      context.read<RosterBloc>().add(
-                                        AddHeroToRoster(hero),
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
+                              child: useGridView
+                                  ? GridView.builder(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: breakpoints.lg
+                                                ? 3
+                                                : 2,
+                                            childAspectRatio: 1.5,
+                                            crossAxisSpacing:
+                                                AppConstants.appPaddingBase,
+                                          ),
+                                      itemCount: filteredHeroes.length,
+                                      itemBuilder: (context, index) {
+                                        final hero = filteredHeroes[index];
+                                        return HeroCard(
+                                          hero: hero,
+                                          onAddPressed: () {
+                                            context.read<RosterBloc>().add(
+                                              AddHeroToRoster(hero),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    )
+                                  : ListView.builder(
+                                      itemCount: filteredHeroes.length,
+                                      itemBuilder: (context, index) {
+                                        final hero = filteredHeroes[index];
+                                        return HeroCard(
+                                          hero: hero,
+                                          onAddPressed: () {
+                                            context.read<RosterBloc>().add(
+                                              AddHeroToRoster(hero),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
                             ),
                           ],
                         );

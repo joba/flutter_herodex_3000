@@ -8,6 +8,7 @@ import 'package:flutter_herodex_3000/models/hero_alignment.dart';
 import 'package:flutter_herodex_3000/models/hero_model.dart' hide Image;
 import 'package:flutter_herodex_3000/styles/colors.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
+import 'package:flutter_herodex_3000/utils/responsive.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/hero_image_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +28,7 @@ class HeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final breakpoints = context.breakpoints;
 
     final cardWidget = Card(
       margin: EdgeInsets.zero,
@@ -69,6 +71,7 @@ class HeroCard extends StatelessWidget {
                         style: theme.textTheme.headlineLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontSize: breakpoints.md ? 18 : 24,
                         ),
                       ),
                       const SizedBox(height: 8),

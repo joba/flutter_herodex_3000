@@ -4,6 +4,7 @@ import 'package:flutter_herodex_3000/blocs/roster/roster_bloc.dart';
 import 'package:flutter_herodex_3000/blocs/roster/roster_state.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
+import 'package:flutter_herodex_3000/utils/responsive.dart';
 import 'package:flutter_herodex_3000/widgets/hero_card_widget.dart';
 import 'package:flutter_herodex_3000/config/app_texts.dart';
 
@@ -56,6 +57,25 @@ class RosterView extends StatelessWidget {
                         return Center(child: Text(AppTexts.roster.empty));
                       }
                       final rosterList = state.heroes.toList();
+                      final breakpoints = context.breakpoints;
+                      final useGridView = !breakpoints.sm;
+
+                      if (useGridView) {
+                        return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: breakpoints.lg ? 3 : 2,
+                                childAspectRatio: 1.5,
+                                crossAxisSpacing: AppConstants.appPaddingBase,
+                              ),
+                          itemCount: rosterList.length,
+                          itemBuilder: (context, index) {
+                            final hero = rosterList[index];
+                            return HeroCard(hero: hero, showIcon: false);
+                          },
+                        );
+                      }
+
                       return ListView.builder(
                         itemCount: rosterList.length,
                         itemBuilder: (context, index) {
