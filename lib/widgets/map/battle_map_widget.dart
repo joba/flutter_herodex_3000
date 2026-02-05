@@ -32,7 +32,7 @@ class _BattleMapWidgetState extends State<BattleMapWidget> {
 
   Future<void> _checkLocationPermission() async {
     final position = await widget.locationManager.getCurrentPosition();
-    if (position != null) {
+    if (position != null && mounted) {
       setState(() {
         _userPosition = position;
         _locationPermissionGranted = true;

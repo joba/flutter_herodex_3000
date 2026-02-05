@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,6 +23,9 @@ class RootNavigation extends StatelessWidget {
       body: child,
       bottomNavigationBar: showNavigation
           ? NavigationBar(
+              backgroundColor: kIsWeb
+                  ? Theme.of(context).colorScheme.surface.withAlpha(130)
+                  : null,
               selectedIndex: currentIndex,
               onDestinationSelected: (int index) {
                 switch (index) {

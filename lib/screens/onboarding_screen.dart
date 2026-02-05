@@ -61,9 +61,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       widget.analyticsManager.logEvent(
         name: 'onboarding_completed',
         parameters: {
-          'analytics_enabled': _analyticsEnabled,
-          'crashlytics_enabled': _crashlyticsEnabled,
-          'location_enabled': _locationEnabled,
+          'analytics_enabled': _analyticsEnabled.toString(),
+          'crashlytics_enabled': _crashlyticsEnabled.toString(),
+          'location_enabled': _locationEnabled.toString(),
         },
       );
 

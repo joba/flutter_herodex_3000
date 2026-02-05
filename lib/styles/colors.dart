@@ -12,4 +12,5 @@ class AppColors {
   static const Color appBackground = Color(0xFF0a0c0a);
   static const Color textPrimary = Color(0xFFCCCCCC);
   static const Color neutral = Color(0xFF888888);
+  static final Color navBarBackground = Color(0xFF1E1E1E).withAlpha(200);
 }

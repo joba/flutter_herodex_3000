@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart';
+
 class AppConstants {
   // UI
-  static const double appMaxWidth = 1200;
-  static const double appMaxWidthWeb = 600;
-  static const double appMaxHeightWeb = 1000;
+  static const double appMaxWidth = kIsWeb ? 1200 : 600;
+  static const double appMaxHeight = kIsWeb ? 1000 : double.infinity;
   static const double cardHeight = 200;
   static const double borderRadius = 12;
   static const double cardPadding = 16;
