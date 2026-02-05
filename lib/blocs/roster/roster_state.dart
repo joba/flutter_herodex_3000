@@ -22,6 +22,20 @@ abstract class RosterState {
     });
   }
 
+  int get totalSpeed {
+    return heroes.fold(0, (sum, hero) {
+      final speed = int.tryParse(hero.powerstats?.speed ?? '0') ?? 0;
+      return sum + speed;
+    });
+  }
+
+  int get totalStrength {
+    return heroes.fold(0, (sum, hero) {
+      final strength = int.tryParse(hero.powerstats?.strength ?? '0') ?? 0;
+      return sum + strength;
+    });
+  }
+
   int get goodCount {
     return heroes
         .where(

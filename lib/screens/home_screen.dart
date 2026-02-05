@@ -7,6 +7,7 @@ import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/managers/location_manager.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/decorations.dart';
+import 'package:flutter_herodex_3000/utils/responsive.dart';
 import 'package:flutter_herodex_3000/utils/snackbar.dart';
 import 'package:flutter_herodex_3000/widgets/heroes_alignment_bar.dart';
 import 'package:flutter_herodex_3000/widgets/map/battle_map_widget.dart';
@@ -29,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final breakpoints = context.breakpoints;
+
     return BlocListener<RosterBloc, RosterState>(
       listener: (context, state) {
         if (state is RosterError) {
@@ -46,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       MergeSemantics(
                         child: Container(
+                          constraints: const BoxConstraints(maxWidth: 600),
                           padding: const EdgeInsets.all(
                             AppConstants.appPaddingBase * 2,
                           ),
@@ -75,72 +79,143 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: AppConstants.appPaddingBase * 4),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          MergeSemantics(
-                            child: Container(
-                              padding: const EdgeInsets.all(
-                                AppConstants.appPaddingBase,
-                              ),
-                              decoration: homeCardDecoration(
-                                context,
-                                color: theme.colorScheme.secondary,
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    AppTexts.home.power.toUpperCase(),
-                                    style: theme.textTheme.titleLarge,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(
-                                    height: AppConstants.appPaddingBase,
-                                  ),
-                                  Text(
-                                    '${state.totalPower}',
-                                    style: theme.textTheme.titleLarge?.copyWith(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold,
+                      Container(
+                        constraints: const BoxConstraints(maxWidth: 600),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            MergeSemantics(
+                              child: Container(
+                                padding: const EdgeInsets.all(
+                                  AppConstants.appPaddingBase,
+                                ),
+                                decoration: homeCardDecoration(
+                                  context,
+                                  color: theme.colorScheme.secondary,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      AppTexts.home.power.toUpperCase(),
+                                      style: theme.textTheme.titleLarge,
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                    const SizedBox(
+                                      height: AppConstants.appPaddingBase,
+                                    ),
+                                    Text(
+                                      '${state.totalPower}',
+                                      style: theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          MergeSemantics(
-                            child: Container(
-                              padding: const EdgeInsets.all(
-                                AppConstants.appPaddingBase,
-                              ),
-                              decoration: homeCardDecoration(
-                                context,
-                                color: theme.colorScheme.secondary,
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    AppTexts.home.combat.toUpperCase(),
-                                    style: theme.textTheme.titleLarge,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(
-                                    height: AppConstants.appPaddingBase,
-                                  ),
-                                  Text(
-                                    '${state.totalCombat}',
-                                    style: theme.textTheme.titleLarge?.copyWith(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold,
+                            MergeSemantics(
+                              child: Container(
+                                padding: const EdgeInsets.all(
+                                  AppConstants.appPaddingBase,
+                                ),
+                                decoration: homeCardDecoration(
+                                  context,
+                                  color: theme.colorScheme.secondary,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      AppTexts.home.combat.toUpperCase(),
+                                      style: theme.textTheme.titleLarge,
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                    const SizedBox(
+                                      height: AppConstants.appPaddingBase,
+                                    ),
+                                    Text(
+                                      '${state.totalCombat}',
+                                      style: theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            if (!breakpoints.sm)
+                              MergeSemantics(
+                                child: Container(
+                                  padding: const EdgeInsets.all(
+                                    AppConstants.appPaddingBase,
+                                  ),
+                                  decoration: homeCardDecoration(
+                                    context,
+                                    color: theme.colorScheme.secondary,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        AppTexts.home.strength.toUpperCase(),
+                                        style: theme.textTheme.titleLarge,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(
+                                        height: AppConstants.appPaddingBase,
+                                      ),
+                                      Text(
+                                        '${state.totalStrength}',
+                                        style: theme.textTheme.titleLarge
+                                            ?.copyWith(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            if (!breakpoints.sm)
+                              MergeSemantics(
+                                child: Container(
+                                  padding: const EdgeInsets.all(
+                                    AppConstants.appPaddingBase,
+                                  ),
+                                  decoration: homeCardDecoration(
+                                    context,
+                                    color: theme.colorScheme.secondary,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        AppTexts.home.speed.toUpperCase(),
+                                        style: theme.textTheme.titleLarge,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(
+                                        height: AppConstants.appPaddingBase,
+                                      ),
+                                      Text(
+                                        '${state.totalSpeed}',
+                                        style: theme.textTheme.titleLarge
+                                            ?.copyWith(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 32),
                       BattleMapWidget(
@@ -152,19 +227,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: theme.textTheme.titleMedium,
                       ),
                       const SizedBox(height: AppConstants.appPaddingBase),
-                      Column(
-                        children: [
-                          _NewsItem(text: AppTexts.news.feed10),
-                          _NewsItem(text: AppTexts.news.feed9),
-                          _NewsItem(text: AppTexts.news.feed8),
-                          _NewsItem(text: AppTexts.news.feed7),
-                          _NewsItem(text: AppTexts.news.feed6),
-                          _NewsItem(text: AppTexts.news.feed5),
-                          _NewsItem(text: AppTexts.news.feed4),
-                          _NewsItem(text: AppTexts.news.feed3),
-                          _NewsItem(text: AppTexts.news.feed2),
-                          _NewsItem(text: AppTexts.news.feed1),
-                        ],
+                      SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          children: [
+                            _NewsItem(text: AppTexts.news.feed10),
+                            _NewsItem(text: AppTexts.news.feed9),
+                            _NewsItem(text: AppTexts.news.feed8),
+                            _NewsItem(text: AppTexts.news.feed7),
+                            _NewsItem(text: AppTexts.news.feed6),
+                            _NewsItem(text: AppTexts.news.feed5),
+                            _NewsItem(text: AppTexts.news.feed4),
+                            _NewsItem(text: AppTexts.news.feed3),
+                            _NewsItem(text: AppTexts.news.feed2),
+                            _NewsItem(text: AppTexts.news.feed1),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -188,6 +266,7 @@ class _NewsItem extends StatelessWidget {
     return Semantics(
       label: 'News alert',
       child: Container(
+        constraints: const BoxConstraints(maxWidth: 600),
         margin: const EdgeInsets.only(bottom: AppConstants.appPaddingBase),
         padding: const EdgeInsets.all(AppConstants.appPaddingBase),
         decoration: BoxDecoration(

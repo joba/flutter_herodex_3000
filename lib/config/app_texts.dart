@@ -57,6 +57,8 @@ class _HomeTexts {
   String get welcomeMessage => 'Welcome to HeroDex 3000';
   String get power => 'Power';
   String get combat => 'Combat';
+  String get speed => 'Speed';
+  String get strength => 'Strength';
   String get mapTitle => 'Battle Zones'.toUpperCase();
 }
 

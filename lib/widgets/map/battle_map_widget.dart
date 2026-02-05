@@ -53,6 +53,7 @@ class _BattleMapWidgetState extends State<BattleMapWidget> {
         Text(AppTexts.home.mapTitle, style: theme.textTheme.titleMedium),
         const SizedBox(height: AppConstants.appPaddingBase),
         Container(
+          constraints: const BoxConstraints(maxWidth: 800),
           height: AppConstants.mapHeight,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.borderRadius),
