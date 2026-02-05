@@ -40,7 +40,7 @@ class HeroCard extends StatelessWidget {
         child: InkWell(
           onTap: () => context.push('/details/${hero.id}'),
           child: SizedBox(
-            height: AppConstants.cardHeight,
+            height: breakpoints.sm ? AppConstants.cardHeight : null,
             child: Stack(
               fit: StackFit.expand,
               children: [
