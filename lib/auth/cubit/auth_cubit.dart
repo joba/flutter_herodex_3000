@@ -79,6 +79,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signUp(String email, String password) async {
+    emit(AuthLoading());
     try {
       await _authRepository.signUp(email: email, password: password);
       _analyticsManager.logEvent(

@@ -92,7 +92,11 @@ class _HeroDetailsState extends State<HeroDetails> {
                                       AddHeroToRoster(hero),
                                     );
                                   },
-                            child: Text(AppTexts.roster.addHero),
+                            child: Text(
+                              isInRoster
+                                  ? AppTexts.roster.heroIsInRoster
+                                  : AppTexts.roster.addHero,
+                            ),
                           );
                         },
                       ),

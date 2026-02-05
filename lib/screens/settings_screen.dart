@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
+import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
 import 'package:flutter_herodex_3000/blocs/theme/theme_cubit.dart';
 import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
@@ -58,10 +59,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _crashlyticsManager.recordError(
         e,
         stackTrace,
-        reason: 'Failed to load preferences',
+        reason: AppTexts.settings.loadPreferencesError,
       );
       if (mounted) {
-        AppSnackBar.of(context).showError('Failed to load preferences: $e');
+        AppSnackBar.of(
+          context,
+        ).showError('${AppTexts.settings.loadPreferencesError}: $e');
       }
     }
   }
@@ -76,19 +79,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       if (kIsWeb) {
         final webInfo = await deviceInfo.webBrowserInfo;
-        osVersion = 'Web - ${webInfo.browserName.name}';
-        deviceModel = webInfo.platform ?? 'Unknown';
+        osVersion =
+            '${AppTexts.settings.systemInfoPrefixWeb} - ${webInfo.browserName.name}';
+        deviceModel = webInfo.platform ?? AppTexts.settings.systemInfoUnknown;
       } else if (Platform.isAndroid) {
         final androidInfo = await deviceInfo.androidInfo;
-        osVersion = 'Android ${androidInfo.version.release}';
+        osVersion =
+            '${AppTexts.settings.systemInfoPrefixAndroid} ${androidInfo.version.release}';
         deviceModel = androidInfo.model;
       } else if (Platform.isIOS) {
         final iosInfo = await deviceInfo.iosInfo;
-        osVersion = 'iOS ${iosInfo.systemVersion}';
+        osVersion =
+            '${AppTexts.settings.systemInfoPrefixIOS} ${iosInfo.systemVersion}';
         deviceModel = iosInfo.model;
       } else if (Platform.isMacOS) {
         final macInfo = await deviceInfo.macOsInfo;
-        osVersion = 'macOS ${macInfo.osRelease}';
+        osVersion =
+            '${AppTexts.settings.systemInfoPrefixMacOS} ${macInfo.osRelease}';
         deviceModel = macInfo.model;
       }
 
@@ -102,10 +109,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _crashlyticsManager.recordError(
         e,
         stackTrace,
-        reason: 'Failed to load system info',
+        reason: AppTexts.settings.loadSystemInfoError,
       );
       if (mounted) {
-        AppSnackBar.of(context).showError('Failed to load system info: $e');
+        AppSnackBar.of(
+          context,
+        ).showError('${AppTexts.settings.loadSystemInfoError}: $e');
       }
     }
   }
@@ -142,45 +151,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       const SizedBox(height: AppConstants.appPaddingBase * 3),
                       // Build Version
-                      _buildSectionTitle('Version', theme),
+                      _buildSectionTitle(
+                        AppTexts.settings.settingsHeaderVersion,
+                        theme,
+                      ),
                       const SizedBox(height: AppConstants.appPaddingBase / 2),
                       _buildInfoCard(
-                        'App Version',
-                        _version.isEmpty ? 'Loading...' : _version,
+                        AppTexts.settings.settingsLabelVersion,
+                        _version.isEmpty ? '-' : _version,
                         theme,
                       ),
                       _buildInfoCard(
-                        'Build Number',
-                        _buildNumber.isEmpty ? 'Loading...' : _buildNumber,
+                        AppTexts.settings.settingsLabelBuildNumber,
+                        _buildNumber.isEmpty ? '-' : _buildNumber,
                         theme,
                       ),
                       const SizedBox(height: AppConstants.appPaddingBase * 3),
 
                       // System Status
-                      _buildSectionTitle('System Status', theme),
+                      _buildSectionTitle(
+                        AppTexts.settings.settingsHeaderSystemStatus,
+                        theme,
+                      ),
                       const SizedBox(height: AppConstants.appPaddingBase / 2),
                       _buildInfoCard(
-                        'Platform',
-                        _osVersion.isEmpty ? 'Loading...' : _osVersion,
+                        AppTexts.settings.settingsLabelPlatform,
+                        _osVersion.isEmpty ? '-' : _osVersion,
                         theme,
                       ),
                       _buildInfoCard(
-                        'Device',
-                        _deviceModel.isEmpty ? 'Loading...' : _deviceModel,
+                        AppTexts.settings.settingsLabelDevice,
+                        _deviceModel.isEmpty ? '-' : _deviceModel,
                         theme,
+                      ),
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          if (state is AuthAuthenticated) {
+                            return _buildInfoCard(
+                              AppTexts.settings.settingsLabelUser,
+                              state.user.email ??
+                                  AppTexts.settings.settingsLabelUserNoEmail,
+                              theme,
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                       const SizedBox(height: AppConstants.appPaddingBase * 3),
 
                       // Preferences
-                      _buildSectionTitle('Preferences', theme),
+                      _buildSectionTitle(
+                        AppTexts.settings.settingsHeaderPreferences,
+                        theme,
+                      ),
                       const SizedBox(height: AppConstants.appPaddingBase / 2),
                       Card(
                         child: Column(
                           children: [
                             SwitchListTile(
-                              title: const Text('Analytics'),
-                              subtitle: const Text(
-                                'Help improve the app by sharing usage data',
+                              title: Text(
+                                AppTexts.settings.settingsLabelAnalytics,
+                              ),
+                              subtitle: Text(
+                                AppTexts.settings.settingsInfoAnalytics,
                               ),
                               value: _analyticsEnabled,
                               onChanged: (value) async {
@@ -195,9 +228,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             if (!kIsWeb) const Divider(height: 1),
                             if (!kIsWeb)
                               SwitchListTile(
-                                title: const Text('Crashlytics'),
-                                subtitle: const Text(
-                                  'Automatically report crashes to help fix bugs',
+                                title: Text(
+                                  AppTexts.settings.settingsLabelCrashlytics,
+                                ),
+                                subtitle: Text(
+                                  AppTexts.settings.settingsInfoCrashlytics,
                                 ),
                                 value: _crashReportingEnabled,
                                 onChanged: (value) async {
@@ -211,9 +246,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             const Divider(height: 1),
                             SwitchListTile(
-                              title: const Text('Location Services'),
-                              subtitle: const Text(
-                                'Enable location-based features in the app',
+                              title: Text(
+                                AppTexts.settings.settingsLabelLocation,
+                              ),
+                              subtitle: Text(
+                                AppTexts.settings.settingsInfoLocation,
                               ),
                               value: _locationEnabled,
                               onChanged: (value) async {
@@ -229,9 +266,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             BlocBuilder<ThemeCubit, ThemeMode>(
                               builder: (context, themeMode) {
                                 return SwitchListTile(
-                                  title: const Text('Dark Mode'),
-                                  subtitle: const Text(
-                                    'Use dark theme throughout the app',
+                                  title: Text(
+                                    AppTexts.settings.settingsLabelDarkMode,
+                                  ),
+                                  subtitle: Text(
+                                    AppTexts.settings.settingsInfoDarkMode,
                                   ),
                                   value: themeMode == ThemeMode.dark,
                                   onChanged: (value) {
@@ -247,14 +286,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       const SizedBox(height: AppConstants.appPaddingBase * 3),
 
-                      UpperCaseElevatedButton(
-                        onPressed: () async {
-                          await context.read<AuthCubit>().signOut();
-                          if (context.mounted) {
-                            context.go('/auth');
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          if (state is AuthAuthenticated) {
+                            return UpperCaseElevatedButton(
+                              onPressed: () async {
+                                await context.read<AuthCubit>().signOut();
+                                if (context.mounted) {
+                                  context.go('/auth');
+                                }
+                              },
+                              child: Text(AppTexts.auth.signOut),
+                            );
                           }
+                          return const SizedBox.shrink();
                         },
-                        child: Text(AppTexts.auth.signOut),
                       ),
 
                       // Copyright
@@ -277,7 +323,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   height: AppConstants.appPaddingBase / 2,
                                 ),
                                 Text(
-                                  'All rights reserved.',
+                                  AppTexts.settings.settingsCopyright,
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
                                   ),

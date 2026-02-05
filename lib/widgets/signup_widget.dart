@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_herodex_3000/auth/cubit/auth_cubit.dart';
+import 'package:flutter_herodex_3000/auth/cubit/auth_state.dart';
 import 'package:flutter_herodex_3000/config/app_texts.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/widgets/uppercase_elevated_button.dart';
@@ -29,7 +30,7 @@ class _SignupWidgetState extends State<SignupWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Create account'),
+      title: Text(AppTexts.auth.createAccount),
       content: Form(
         key: _formKey,
         child: Column(
@@ -37,17 +38,21 @@ class _SignupWidgetState extends State<SignupWidget> {
           children: [
             TextFormField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                labelText: AppTexts.auth.emailPlaceholder,
+              ),
               validator: (value) =>
-                  value!.isEmpty ? 'Please enter an email' : null,
+                  value!.isEmpty ? AppTexts.auth.invalidEmail : null,
             ),
 
             TextFormField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                labelText: AppTexts.auth.passwordPlaceholder,
+              ),
               obscureText: true,
               validator: (value) =>
-                  value!.isEmpty ? 'Please enter a password' : null,
+                  value!.isEmpty ? AppTexts.auth.invalidPassword : null,
             ),
           ],
         ),
@@ -60,17 +65,23 @@ class _SignupWidgetState extends State<SignupWidget> {
           child: Text(AppTexts.common.cancel),
         ),
         const SizedBox(height: AppConstants.appPaddingBase * 2),
-        UpperCaseElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              widget.onSignupAttempt?.call(_emailController.text);
-              context.read<AuthCubit>().signUp(
-                _emailController.text,
-                _passwordController.text,
-              );
-            }
+        BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            return UpperCaseElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  widget.onSignupAttempt?.call(_emailController.text);
+                  context.read<AuthCubit>().signUp(
+                    _emailController.text,
+                    _passwordController.text,
+                  );
+                }
+              },
+              child: state is AuthLoading
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : Text(AppTexts.auth.signUp),
+            );
           },
-          child: Text(AppTexts.common.save),
         ),
       ],
     );

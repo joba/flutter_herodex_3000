@@ -1,6 +1,6 @@
 # Flutter Herodex 3000
 
-A Flutter application for browsing and managing superhero information using the SuperheroAPI. The app supports multiple platforms (iOS, Android, Web, macOS, Linux, Windows) and provides features like hero search, roster management, location-based features, and user authentication.
+A Flutter application for browsing and managing superhero information using the SuperheroAPI. The app supports multiple platforms (iOS, Android, Web, macOS) and provides features like hero search, roster management, location-based features, and user authentication.
 
 ## Features
 
@@ -65,12 +65,6 @@ flutter run -d android
 
 # macOS
 flutter run -d macos
-
-# Linux
-flutter run -d linux
-
-# Windows
-flutter run -d windows
 ```
 
 #### Web
@@ -130,7 +124,8 @@ flutter_herodex_3000/
 │   │   ├── api_manager.dart          # API communication
 │   │   ├── crashlytics_manager.dart  # Crash reporting
 │   │   ├── image_manager.dart        # Local image handling
-│   │   └── location_manager.dart     # Location services
+│   │   ├── location_manager.dart     # Location services
+│   │   └── network_manager.dart      # Connection services
 │   ├── models/                       # Data models
 │   ├── screens/                      # UI screens
 │   │   ├── home_screen.dart
@@ -183,6 +178,7 @@ Main dependency configuration file. Key dependencies include:
 - **Location**: `geolocator`, `latlong2`
 - **Device Info**: `package_info_plus`, `device_info_plus`
 - **Environment**: `flutter_dotenv`
+- **Connectivity**: `connectivity_plus`
 
 ### `analysis_options.yaml`
 
@@ -244,8 +240,6 @@ flutter build web --release
 
 ```bash
 flutter build macos --release
-flutter build linux --release
-flutter build windows --release
 ```
 
 ## Proxy Server Deployment

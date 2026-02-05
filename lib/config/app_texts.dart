@@ -72,6 +72,7 @@ class _AuthTexts {
   String get passwordPlaceholder => 'Password';
   String get invalidEmail => 'Please enter an email';
   String get invalidPassword => 'Please enter a password';
+  String get createAccount => 'Create Account';
 }
 
 class _SearchTexts {
@@ -97,6 +98,7 @@ class _RosterTexts {
   String get deleteConfirm => 'Remove hero from roster?';
   String get heroNotFound => 'Hero not found';
   String get addHero => 'Add Hero to Roster';
+  String get heroIsInRoster => 'Hero is already in roster';
   String get alignmentGood => 'Good';
   String get alignmentBad => 'Bad';
   String get alignmentNeutral => 'Neutral';
@@ -110,7 +112,34 @@ class _SettingsTexts {
 
   String get title => 'Settings';
   String get logout => 'Logout';
-  String get logoutConfirm => 'Are you sure you want to logout?';
+  String get loadPreferencesError => 'Failed to load preferences';
+  String get loadSystemInfoError => 'Failed to load system info';
+  String get systemInfoPrefixWeb => 'Web';
+  String get systemInfoPrefixAndroid => 'Android';
+  String get systemInfoPrefixIOS => 'iOS';
+  String get systemInfoPrefixMacOS => 'macOS';
+  String get systemInfoUnknown => 'Unknown';
+  String get settingsHeaderVersion => 'Version';
+  String get settingsLabelVersion => 'App Version';
+  String get settingsLabelBuildNumber => 'Build Number';
+  String get settingsHeaderSystemStatus => 'System Status';
+  String get settingsLabelPlatform => 'Platform';
+  String get settingsLabelDevice => 'Device';
+  String get settingsLabelUser => 'Logged in as';
+  String get settingsLabelUserNoEmail => 'No email';
+  String get settingsHeaderPreferences => 'Preferences';
+  String get settingsLabelAnalytics => 'Analytics';
+  String get settingsInfoAnalytics =>
+      'Help improve the app by sharing usage data';
+  String get settingsLabelCrashlytics => 'Crashlytics';
+  String get settingsInfoCrashlytics =>
+      'Enable crash reporting to help us fix issues and improve stability.';
+  String get settingsLabelLocation => 'Location Access';
+  String get settingsInfoLocation =>
+      'Allow the app to access your location for enhanced features.';
+  String get settingsLabelDarkMode => 'Dark Mode';
+  String get settingsInfoDarkMode => 'Use dark theme throughout the app.';
+  String get settingsCopyright => 'All rights reserved.';
 }
 
 class _CommonTexts {
