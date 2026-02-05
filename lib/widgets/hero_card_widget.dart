@@ -183,27 +183,29 @@ class HeroCard extends StatelessWidget {
     if (!showIcon) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: AppConstants.cardPadding),
-        child: Dismissible(
-          key: Key(hero.id.toString()),
-          direction: DismissDirection.endToStart,
-          background: Container(
-            color: theme.colorScheme.error,
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Semantics(
-              label: 'Delete',
-              child: const Icon(Icons.delete, color: Colors.white),
+        child: ClipRect(
+          child: Dismissible(
+            key: Key(hero.id.toString()),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              color: theme.colorScheme.error,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Semantics(
+                label: 'Delete',
+                child: const Icon(Icons.delete, color: Colors.white),
+              ),
             ),
+            onDismissed: (direction) {
+              context.read<RosterBloc>().add(
+                RemoveHeroFromRoster(hero.id.toString()),
+              );
+              AppSnackBar.of(
+                context,
+              ).showSuccess(AppTexts.roster.heroRemoved(hero.name));
+            },
+            child: cardWidget,
           ),
-          onDismissed: (direction) {
-            context.read<RosterBloc>().add(
-              RemoveHeroFromRoster(hero.id.toString()),
-            );
-            AppSnackBar.of(
-              context,
-            ).showSuccess(AppTexts.roster.heroRemoved(hero.name));
-          },
-          child: cardWidget,
         ),
       );
     }
