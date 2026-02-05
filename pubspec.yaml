@@ -54,6 +54,7 @@ dependencies:
   flutter_map: 
   latlong2:
   geolocator:
+  connectivity_plus:
 
 dev_dependencies:
   flutter_launcher_icons:

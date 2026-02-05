@@ -10,6 +10,7 @@ import 'package:flutter_herodex_3000/config/app_router.dart';
 import 'package:flutter_herodex_3000/managers/api_manager.dart';
 import 'package:flutter_herodex_3000/managers/crashlytics_manager.dart';
 import 'package:flutter_herodex_3000/managers/location_manager.dart';
+import 'package:flutter_herodex_3000/managers/network_manager.dart';
 import 'package:flutter_herodex_3000/screens/home_screen.dart';
 import 'package:flutter_herodex_3000/screens/splash_screen.dart';
 import 'package:flutter_herodex_3000/styles/themes.dart';
@@ -21,6 +22,7 @@ import 'package:flutter_herodex_3000/managers/analytics_manager.dart';
 import 'package:flutter_herodex_3000/screens/login_screen.dart';
 import 'package:flutter_herodex_3000/utils/constants.dart';
 import 'package:flutter_herodex_3000/utils/logger.dart';
+import 'package:flutter_herodex_3000/widgets/network_status_listener.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
@@ -39,8 +41,26 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize network manager
+    NetworkManager().initialize();
+  }
+
+  @override
+  void dispose() {
+    NetworkManager().dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,15 +106,19 @@ class MyApp extends StatelessWidget {
               themeMode: themeMode,
               routerConfig: appRouter,
               builder: (context, child) {
-                return Container(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: AppConstants.appMaxWidth,
-                        maxHeight: AppConstants.appMaxHeight,
+                return NetworkStatusListener(
+                  child: Container(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: AppConstants.appMaxWidth,
+                          maxHeight: AppConstants.appMaxHeight,
+                        ),
+                        child: child ?? const SizedBox(),
                       ),
-                      child: child ?? const SizedBox(),
                     ),
                   ),
                 );
